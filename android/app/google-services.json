@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "900129103636",
+    "project_id": "myfashn-b604d",
+    "storage_bucket": "myfashn-b604d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900129103636:android:e997d7617219aea23cac01",
+        "android_client_info": {
+          "package_name": "com.myfashn.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900129103636-0uos1v1kkli0iaf6ejfugpf4egs6he8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKikS17inDOmoUvM2GT5J-gKMSf5vmtNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900129103636-0uos1v1kkli0iaf6ejfugpf4egs6he8l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
