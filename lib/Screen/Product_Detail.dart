@@ -739,7 +739,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                   : Container(),
             ],
           ),
-          Align(
+          userType == "reseller" ?    Align(
             alignment: Alignment.centerLeft,
             child: Row(
               children: [
@@ -774,7 +774,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                 //     }, child: Text("Add",style: TextStyle(color: Colors.white),)),
               ],
             ),
-          ),
+          ) : SizedBox(),
 
           userType == "reseller" ? InkWell(
             onTap: ()async{

@@ -389,23 +389,23 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                           )
                                         : Container()),
                               ])),
-                          offPer != null
-                              ? Container(
-                                  decoration: BoxDecoration(
-                                      color: colors.red,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      offPer + "%",
-                                      style: TextStyle(
-                                          color: colors.whiteTemp,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 9),
-                                    ),
-                                  ),
-                                  margin: EdgeInsets.all(5),
-                                )
+                          offPer != null?  Container()
+                              // ? Container(
+                              //     decoration: BoxDecoration(
+                              //         color: colors.red,
+                              //         borderRadius: BorderRadius.circular(10)),
+                              //     child: Padding(
+                              //       padding: const EdgeInsets.all(5.0),
+                              //       child: Text(
+                              //         offPer + "%",
+                              //         style: TextStyle(
+                              //             color: colors.whiteTemp,
+                              //             fontWeight: FontWeight.bold,
+                              //             fontSize: 9),
+                              //       ),
+                              //     ),
+                              //     margin: EdgeInsets.all(5),
+                              //   )
                               : Container()
                         ],
                       )),
@@ -1062,7 +1062,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                 : Container(),
                           ],
                         ),
-      Container(
+                  userType == "retail" || userType == "wholeseller" ? SizedBox() :  Container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -1131,7 +1131,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           ],
         ),
       ),
-                        Text("Input price offered to your end customer here",style: TextStyle(color: Colors.red),)
+                        userType == "retail" || userType == "wholeseller" ? SizedBox() :   Text("Input price offered to your end customer here",style: TextStyle(color: Colors.red),)
                       ],
                     ),
                   ),

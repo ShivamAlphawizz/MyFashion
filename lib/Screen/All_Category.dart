@@ -297,7 +297,7 @@ class _AllCategoryState extends State<AllCategory> {
                 MaterialPageRoute(
                   builder: (context) => ProductList(
                     name: popularList[index].name,
-                    //id: popularList[index].id,
+                    id: popularList[index].id,
                     catId: popularList[index].id,
                     tag: false,
                     fromSeller: false,

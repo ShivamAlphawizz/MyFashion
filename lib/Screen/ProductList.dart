@@ -1055,7 +1055,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
       LIMIT: perPage.toString(),
       OFFSET: offset.toString(),
       TOP_RETAED: top,
-       'sub_category':"${widget.id}",
+      // 'sub_category':"${widget.id}",
     };
     if (selId != null && selId != "") {
       parameter[ATTRIBUTE_VALUE_ID] = selId;
@@ -1064,7 +1064,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
     if (widget.fromSeller!) {
       parameter["seller_id"] = widget.id!;
     } else {
-      parameter[CATID] = widget.catId ?? '';
+      parameter[CATID] = widget.id == "" || widget.id == null  ? widget.catId : widget.id;
     }
     if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
     if (widget.dis != null) parameter[DISCOUNT] = widget.dis.toString();
