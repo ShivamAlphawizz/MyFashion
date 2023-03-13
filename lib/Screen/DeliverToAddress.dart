@@ -1056,7 +1056,7 @@ class StateAddress extends State<DeliveryAddress> with TickerProviderStateMixin 
       "area":area.toString(),
       "pincode":pincodeC!.text,
       "state":state.toString(),
-      "country":country.toString(),
+      "country":countryC!.text,
     });
   }
 
@@ -1596,7 +1596,7 @@ class StateAddress extends State<DeliveryAddress> with TickerProviderStateMixin 
                     "area": _areaController.text,
                     "pincode":pincodeC!.text,
                     "state":state,
-                    "country":country,
+                    "country":countryC!.text,
                   });
                  // validateAndSubmit();
                  //  addNewAddress()async{

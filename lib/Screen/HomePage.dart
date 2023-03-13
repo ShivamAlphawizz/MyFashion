@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage>
   List<Model> offerImages = [];
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  new GlobalKey<RefreshIndicatorState>();
 
   //String? curPin;
 
@@ -122,17 +122,17 @@ class _HomePageState extends State<HomePage>
     }
   }
   SettingProvider? settingsProvider;
-UserProvider? userProvider;
-String? userType;
+  UserProvider? userProvider;
+  String? userType;
   _getSaved() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userProvider = Provider.of<UserProvider>(this.context,listen: false);
     userType = prefs.getString('user_type');
     print("user type here now ${userType}");
     settingsProvider =
-    Provider.of<SettingProvider>(this.context, listen: false);
+        Provider.of<SettingProvider>(this.context, listen: false);
     print("llllllll ${userProvider!.userType}");
-      print("provider data here now ${settingsProvider!.userType}");
+    print("provider data here now ${settingsProvider!.userType}");
     //String get = await settingsProvider.getPrefrence(APP_THEME) ?? '';
 
   }
@@ -142,23 +142,23 @@ String? userType;
     return Scaffold(
       body: _isNetworkAvail
           ? RefreshIndicator(
-              color: colors.primary,
-              key: _refreshIndicatorKey,
-              onRefresh: _refresh,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _deliverPincode(),
-                    _catList(),
-                    _slider(),
-                    _section(),
-                   // _seller()
-                  ],
-                ),
-              ),
-            )
+        color: colors.primary,
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _deliverPincode(),
+              _catList(),
+              _slider(),
+              _section(),
+              // _seller()
+            ],
+          ),
+        ),
+      )
           : noInternet(context),
     );
   }
@@ -179,53 +179,53 @@ String? userType;
         return data
             ? sliderLoading()
             : Stack(
-                children: [
-                  Container(
-                    height: height,
-                    width: double.infinity,
-                    // margin: EdgeInsetsDirectional.only(top: 10),
-                    child: PageView.builder(
-                      itemCount: homeSliderList.length,
-                      scrollDirection: Axis.horizontal,
-                      controller: _controller,
-                      physics: AlwaysScrollableScrollPhysics(),
-                      onPageChanged: (index) {
-                        context.read<HomeProvider>().setCurSlider(index);
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        return pages[index];
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    height: 40,
-                    left: 0,
-                    width: deviceWidth,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: map<Widget>(
-                        homeSliderList,
-                        (index, url) {
-                          return Container(
-                              width: 8.0,
-                              height: 8.0,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 2.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context.read<HomeProvider>().curSlider ==
-                                        index
-                                    ? Theme.of(context).colorScheme.fontColor
-                                    : Theme.of(context).colorScheme.lightBlack,
-                              ));
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              );
+          children: [
+            Container(
+              height: height,
+              width: double.infinity,
+              // margin: EdgeInsetsDirectional.only(top: 10),
+              child: PageView.builder(
+                itemCount: homeSliderList.length,
+                scrollDirection: Axis.horizontal,
+                controller: _controller,
+                physics: AlwaysScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  context.read<HomeProvider>().setCurSlider(index);
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return pages[index];
+                },
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              height: 40,
+              left: 0,
+              width: deviceWidth,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: map<Widget>(
+                  homeSliderList,
+                      (index, url) {
+                    return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: context.read<HomeProvider>().curSlider ==
+                              index
+                              ? Theme.of(context).colorScheme.fontColor
+                              : Theme.of(context).colorScheme.lightBlack,
+                        ));
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
       },
       selector: (_, homeProvider) => homeProvider.sliderLoading,
     );
@@ -233,7 +233,7 @@ String? userType;
 
   void _animateSlider() {
     Future.delayed(Duration(seconds: 30)).then(
-      (_) {
+          (_) {
         if (mounted) {
           int nextPage = _controller.hasClients
               ? _controller.page!.round() + 1
@@ -245,7 +245,7 @@ String? userType;
           if (_controller.hasClients)
             _controller
                 .animateToPage(nextPage,
-                    duration: Duration(milliseconds: 200), curve: Curves.linear)
+                duration: Duration(milliseconds: 200), curve: Curves.linear)
                 .then((_) => _animateSlider());
         }
       },
@@ -265,26 +265,26 @@ String? userType;
       back = Theme.of(context).colorScheme.back4;
     else
       back = Theme.of(context).colorScheme.back5;
-      print("offer iamge here ow ${offerImages.length} and ${index}");
+    print("checking section data here ${sectionList[index].productList!.length}");
     return sectionList[index].productList!.length > 0
         ? Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _getHeading(sectionList[index].title ?? "", index),
-                    _getSection(index),
-                  ],
-                ),
-              ),
-              offerImages.length > index ?
-              _getOfferImage(index)
-                  : Container(),
+              _getHeading(sectionList[index].title ?? "", index),
+              _getSection(index),
             ],
-          )
+          ),
+        ),
+        offerImages.length > index  ?
+        _getOfferImage(index)
+            : Container(),
+      ],
+    )
         : Container();
   }
 
@@ -298,6 +298,7 @@ String? userType;
             clipBehavior: Clip.none,
             alignment: Alignment.centerRight,
             children: <Widget>[
+
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -321,7 +322,6 @@ String? userType;
               /*   Positioned(
                   // clipBehavior: Clip.hardEdge,
                   // margin: EdgeInsets.symmetric(horizontal: 20),
-
                   right: -14,
                   child: SvgPicture.asset("assets/images/eshop.svg"))*/
             ],
@@ -369,13 +369,14 @@ String? userType;
   }
 
   _getOfferImage(index) {
+    print("working with index now ${index}");
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: InkWell(
         child: FadeInImage(
             fit: BoxFit.contain,
             fadeInDuration: Duration(milliseconds: 150),
-            image: CachedNetworkImageProvider(offerImages[index].image!),
+            image: CachedNetworkImageProvider(offerImages[index].image.toString()),
             width: double.maxFinite,
             imageErrorBuilder: (context, error, stackTrace) => erroWidget(50),
 
@@ -390,11 +391,11 @@ String? userType;
             Navigator.push(
               context,
               PageRouteBuilder(
-                  //transitionDuration: Duration(seconds: 1),
+                //transitionDuration: Duration(seconds: 1),
                   pageBuilder: (_, __, ___) =>
                       ProductDetail(model: item, secPos: 0, index: 0, list: true
-                          //  title: sectionList[secPos].title,
-                          )),
+                        //  title: sectionList[secPos].title,
+                      )),
             );
           } else if (offerImages[index].type == "categories") {
             print("offer images section here ${offerImages[index].list}");
@@ -428,202 +429,203 @@ String? userType;
     );
   }
 
+
   _getSection(int i) {
     var orient = MediaQuery.of(context).orientation;
 
     return sectionList[i].style == DEFAULT
         ? Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: GridView.count(
-              // mainAxisSpacing: 12,
-              // crossAxisSpacing: 12,
-              padding: EdgeInsetsDirectional.only(top: 5),
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              childAspectRatio: 0.750,
+      padding: const EdgeInsets.all(15.0),
+      child: GridView.count(
+        // mainAxisSpacing: 12,
+        // crossAxisSpacing: 12,
+        padding: EdgeInsetsDirectional.only(top: 5),
+        crossAxisCount: 2,
+        shrinkWrap: true,
+        childAspectRatio: 0.750,
 
-              //  childAspectRatio: 1.0,
-              physics: NeverScrollableScrollPhysics(),
-              children:
-                  //  [
-                  //   Container(height: 500, width: 1200, color: Colors.red),
-                  //   Text("hello"),
-                  //   Container(height: 10, width: 50, color: Colors.green),
-                  // ]
-                  List.generate(
-                sectionList[i].productList!.length < 4
-                    ? sectionList[i].productList!.length
-                    : 4,
-                (index) {
-                  // return Container(
-                  //   width: 600,
-                  //   height: 50,
-                  //   color: Colors.red,
-                  // );
-                  return productItem(i, index, index % 2 == 0 ? true : false);
-                },
+        //  childAspectRatio: 1.0,
+        physics: NeverScrollableScrollPhysics(),
+        children:
+        //  [
+        //   Container(height: 500, width: 1200, color: Colors.red),
+        //   Text("hello"),
+        //   Container(height: 10, width: 50, color: Colors.green),
+        // ]
+        List.generate(
+          sectionList[i].productList!.length < 4
+              ? sectionList[i].productList!.length
+              : 4,
+              (index) {
+            // return Container(
+            //   width: 600,
+            //   height: 50,
+            //   color: Colors.red,
+            // );
+            return productItem(i, index, index % 2 == 0 ? true : false);
+          },
+        ),
+      ),
+    )
+        : sectionList[i].style == STYLE1
+        ? sectionList[i].productList!.length > 0
+        ? Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          children: [
+            Flexible(
+                flex: 3,
+                fit: FlexFit.loose,
+                child: Container(
+                    height: orient == Orientation.portrait
+                        ? deviceHeight! * 0.4
+                        : deviceHeight!,
+                    child: productItem(i, 0, true))),
+            Flexible(
+              flex: 2,
+              fit: FlexFit.loose,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                      height: orient == Orientation.portrait
+                          ? deviceHeight! * 0.2
+                          : deviceHeight! * 0.5,
+                      child: productItem(i, 1, false)),
+                  Container(
+                      height: orient == Orientation.portrait
+                          ? deviceHeight! * 0.2
+                          : deviceHeight! * 0.5,
+                      child: productItem(i, 2, false)),
+                ],
               ),
             ),
-          )
-        : sectionList[i].style == STYLE1
-            ? sectionList[i].productList!.length > 0
-                ? Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      children: [
-                        Flexible(
-                            flex: 3,
-                            fit: FlexFit.loose,
-                            child: Container(
-                                height: orient == Orientation.portrait
-                                    ? deviceHeight! * 0.4
-                                    : deviceHeight!,
-                                child: productItem(i, 0, true))),
-                        Flexible(
-                          flex: 2,
-                          fit: FlexFit.loose,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                  height: orient == Orientation.portrait
-                                      ? deviceHeight! * 0.2
-                                      : deviceHeight! * 0.5,
-                                  child: productItem(i, 1, false)),
-                              Container(
-                                  height: orient == Orientation.portrait
-                                      ? deviceHeight! * 0.2
-                                      : deviceHeight! * 0.5,
-                                  child: productItem(i, 2, false)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ))
-                : Container()
-            : sectionList[i].style == STYLE2
-                ? Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          fit: FlexFit.loose,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                  height: orient == Orientation.portrait
-                                      ? deviceHeight! * 0.2
-                                      : deviceHeight! * 0.5,
-                                  child: productItem(i, 0, true)),
-                              Container(
-                                  height: orient == Orientation.portrait
-                                      ? deviceHeight! * 0.2
-                                      : deviceHeight! * 0.5,
-                                  child: productItem(i, 1, true)),
-                            ],
-                          ),
-                        ),
-                        Flexible(
-                            flex: 3,
-                            fit: FlexFit.loose,
-                            child: Container(
-                                height: orient == Orientation.portrait
-                                    ? deviceHeight! * 0.4
-                                    : deviceHeight,
-                                child: productItem(i, 2, false))),
-                      ],
-                    ))
-                : sectionList[i].style == STYLE3
-                    ? Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Flexible(
-                                flex: 1,
-                                fit: FlexFit.loose,
-                                child: Container(
-                                    height: orient == Orientation.portrait
-                                        ? deviceHeight! * 0.3
-                                        : deviceHeight! * 0.6,
-                                    child: productItem(i, 0, false))),
-                            Container(
-                              height: orient == Orientation.portrait
-                                  ? deviceHeight! * 0.2
-                                  : deviceHeight! * 0.5,
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                      flex: 1,
-                                      fit: FlexFit.loose,
-                                      child: productItem(i, 1, true)),
-                                  Flexible(
-                                      flex: 1,
-                                      fit: FlexFit.loose,
-                                      child: productItem(i, 2, true)),
-                                  Flexible(
-                                      flex: 1,
-                                      fit: FlexFit.loose,
-                                      child: productItem(i, 3, false)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ))
-                    : sectionList[i].style == STYLE4
-                        ? Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                    flex: 1,
-                                    fit: FlexFit.loose,
-                                    child: Container(
-                                        height: orient == Orientation.portrait
-                                            ? deviceHeight! * 0.25
-                                            : deviceHeight! * 0.5,
-                                        child: productItem(i, 0, false))),
-                                Container(
-                                  height: orient == Orientation.portrait
-                                      ? deviceHeight! * 0.2
-                                      : deviceHeight! * 0.5,
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                          flex: 1,
-                                          fit: FlexFit.loose,
-                                          child: productItem(i, 1, true)),
-                                      Flexible(
-                                          flex: 1,
-                                          fit: FlexFit.loose,
-                                          child: productItem(i, 2, false)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ))
-                        : Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: GridView.count(
-                                padding: EdgeInsetsDirectional.only(top: 5),
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                childAspectRatio: 1.2,
-                                physics: NeverScrollableScrollPhysics(),
-                                mainAxisSpacing: 0,
-                                crossAxisSpacing: 0,
-                                children: List.generate(
-                                  sectionList[i].productList!.length < 6
-                                      ? sectionList[i].productList!.length
-                                      : 6,
-                                  (index) {
-                                    return productItem(i, index,
-                                        index % 2 == 0 ? true : false);
-                                  },
-                                )));
+          ],
+        ))
+        : Container()
+        : sectionList[i].style == STYLE2
+        ? Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          children: [
+            Flexible(
+              flex: 2,
+              fit: FlexFit.loose,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                      height: orient == Orientation.portrait
+                          ? deviceHeight! * 0.2
+                          : deviceHeight! * 0.5,
+                      child: productItem(i, 0, true)),
+                  Container(
+                      height: orient == Orientation.portrait
+                          ? deviceHeight! * 0.2
+                          : deviceHeight! * 0.5,
+                      child: productItem(i, 1, true)),
+                ],
+              ),
+            ),
+            Flexible(
+                flex: 3,
+                fit: FlexFit.loose,
+                child: Container(
+                    height: orient == Orientation.portrait
+                        ? deviceHeight! * 0.4
+                        : deviceHeight,
+                    child: productItem(i, 2, false))),
+          ],
+        ))
+        : sectionList[i].style == STYLE3
+        ? Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+                flex: 1,
+                fit: FlexFit.loose,
+                child: Container(
+                    height: orient == Orientation.portrait
+                        ? deviceHeight! * 0.3
+                        : deviceHeight! * 0.6,
+                    child: productItem(i, 0, false))),
+            Container(
+              height: orient == Orientation.portrait
+                  ? deviceHeight! * 0.2
+                  : deviceHeight! * 0.5,
+              child: Row(
+                children: [
+                  Flexible(
+                      flex: 1,
+                      fit: FlexFit.loose,
+                      child: productItem(i, 1, true)),
+                  Flexible(
+                      flex: 1,
+                      fit: FlexFit.loose,
+                      child: productItem(i, 2, true)),
+                  Flexible(
+                      flex: 1,
+                      fit: FlexFit.loose,
+                      child: productItem(i, 3, false)),
+                ],
+              ),
+            ),
+          ],
+        ))
+        : sectionList[i].style == STYLE4
+        ? Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+                flex: 1,
+                fit: FlexFit.loose,
+                child: Container(
+                    height: orient == Orientation.portrait
+                        ? deviceHeight! * 0.25
+                        : deviceHeight! * 0.5,
+                    child: productItem(i, 0, false))),
+            Container(
+              height: orient == Orientation.portrait
+                  ? deviceHeight! * 0.2
+                  : deviceHeight! * 0.5,
+              child: Row(
+                children: [
+                  Flexible(
+                      flex: 1,
+                      fit: FlexFit.loose,
+                      child: productItem(i, 1, true)),
+                  Flexible(
+                      flex: 1,
+                      fit: FlexFit.loose,
+                      child: productItem(i, 2, false)),
+                ],
+              ),
+            ),
+          ],
+        ))
+        : Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: GridView.count(
+            padding: EdgeInsetsDirectional.only(top: 5),
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            childAspectRatio: 1.2,
+            physics: NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 0,
+            crossAxisSpacing: 0,
+            children: List.generate(
+              sectionList[i].productList!.length < 6
+                  ? sectionList[i].productList!.length
+                  : 6,
+                  (index) {
+                return productItem(i, index,
+                    index % 2 == 0 ? true : false);
+              },
+            )));
   }
 
   Widget productItem(int secPos, int index, bool pad) {
@@ -637,15 +639,15 @@ String? userType;
             sectionList[secPos].productList![index].prVarientList![0].price!);
       } else {
         double off = double.parse(sectionList[secPos]
-                .productList![index]
-                .prVarientList![0]
-                .price!) -
+            .productList![index]
+            .prVarientList![0]
+            .price!) -
             price;
         offPer = ((off * 100) /
-                double.parse(sectionList[secPos]
-                    .productList![index]
-                    .prVarientList![0]
-                    .price!))
+            double.parse(sectionList[secPos]
+                .productList![index]
+                .prVarientList![0]
+                .price!))
             .toStringAsFixed(2);
       }
 
@@ -694,7 +696,7 @@ String? userType;
                       child: Hero(
                         transitionOnUserGestures: true,
                         tag:
-                            "${sectionList[secPos].productList![index].id}$secPos$index",
+                        "${sectionList[secPos].productList![index].id}$secPos$index",
                         child: FadeInImage(
                           fadeInDuration: Duration(milliseconds: 150),
                           image: CachedNetworkImageProvider(
@@ -724,85 +726,85 @@ String? userType;
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-             Row(
-               crossAxisAlignment: CrossAxisAlignment.center,
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Text(
-                   " " + CUR_CURRENCY! + " " + price.toString(),
-                   style: TextStyle(
-                     color: Theme.of(context).colorScheme.fontColor,
-                     fontWeight: FontWeight.bold,
-                   ),
-                 ),
-             userType == "reseller" ?   InkWell(
-                   onTap: (){
-                     openwhatsapp();
-                   },
-                   child: Container(
-                     margin: EdgeInsets.only(right: 5,top: 3),
-                     decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(10),
-                       color: Colors.greenAccent.withOpacity(0.2),
-                     ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    " " + CUR_CURRENCY! + " " + price.toString(),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  userType == "reseller" ?   InkWell(
+                    onTap: (){
+                      openwhatsapp();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: 5,top: 3),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.greenAccent.withOpacity(0.2),
+                      ),
                       padding: EdgeInsets.symmetric(horizontal: 5,vertical: 3),
-                     child: Row(
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       children: [
-                         Text("Share on ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),),
-                         Icon(Icons.whatsapp,color: Colors.greenAccent,size: 18,),
-                       ],
-                     ),
-                   ),
-                 ) : SizedBox.shrink()
-               ],
-             ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Share on ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),),
+                          Icon(Icons.whatsapp,color: Colors.greenAccent,size: 18,),
+                        ],
+                      ),
+                    ),
+                  ) : SizedBox.shrink()
+                ],
+              ),
               Padding(
                 padding: const EdgeInsetsDirectional.only(
                     start: 5.0, bottom: 5, top: 3),
                 child: double.parse(sectionList[secPos]
-                            .productList![index]
-                            .prVarientList![0]
-                            .disPrice!) !=
-                        0
+                    .productList![index]
+                    .prVarientList![0]
+                    .disPrice!) !=
+                    0
                     ? Row(
-                        children: <Widget>[
-                          Text(
-                            double.parse(sectionList[secPos]
-                                        .productList![index]
-                                        .prVarientList![0]
-                                        .disPrice!) !=
-                                    0
-                                ? CUR_CURRENCY! +
-                                    "" +
-                                    sectionList[secPos]
-                                        .productList![index]
-                                        .prVarientList![0]
-                                        .price!
-                                : "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .overline!
-                                .copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    letterSpacing: 0),
-                          ),
-                          Flexible(
-                            child: Text(" | " + "-$offPer%",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .overline!
-                                    .copyWith(
-                                        color: colors.primary,
-                                        letterSpacing: 0)),
-                          ),
-                        ],
-                      )
+                  children: <Widget>[
+                    Text(
+                      double.parse(sectionList[secPos]
+                          .productList![index]
+                          .prVarientList![0]
+                          .disPrice!) !=
+                          0
+                          ? CUR_CURRENCY! +
+                          "" +
+                          sectionList[secPos]
+                              .productList![index]
+                              .prVarientList![0]
+                              .price!
+                          : "",
+                      style: Theme.of(context)
+                          .textTheme
+                          .overline!
+                          .copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          letterSpacing: 0),
+                    ),
+                    Flexible(
+                      child: Text(" | " + "-$offPer%",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline!
+                              .copyWith(
+                              color: colors.primary,
+                              letterSpacing: 0)),
+                    ),
+                  ],
+                )
                     : Container(
-                        height: 5,
-                      ),
+                  height: 5,
+                ),
               )
             ],
           ),
@@ -814,8 +816,8 @@ String? userType;
                 // transitionDuration: Duration(milliseconds: 150),
                 pageBuilder: (_, __, ___) => ProductDetail(
                     model: model, secPos: secPos, index: index, list: false
-                    //  title: sectionList[secPos].title,
-                    ),
+                  //  title: sectionList[secPos].title,
+                ),
               ),
             );
           },
@@ -830,23 +832,23 @@ String? userType;
       builder: (context, data, child) {
         return data
             ? Container(
-                width: double.infinity,
-                child: Shimmer.fromColors(
-                  baseColor: Theme.of(context).colorScheme.simmerBase,
-                  highlightColor: Theme.of(context).colorScheme.simmerHigh,
-                  child: sectionLoading(),
-                ),
-              )
+          width: double.infinity,
+          child: Shimmer.fromColors(
+            baseColor: Theme.of(context).colorScheme.simmerBase,
+            highlightColor: Theme.of(context).colorScheme.simmerHigh,
+            child: sectionLoading(),
+          ),
+        )
             : ListView.builder(
-                padding: EdgeInsets.all(0),
-                itemCount: sectionList.length,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  print("here");
-                  return _singleSection(index);
-                },
-              );
+          padding: EdgeInsets.all(0),
+          itemCount: sectionList.length,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            print("here");
+            return _singleSection(index);
+          },
+        );
       },
       selector: (_, homeProvider) => homeProvider.secLoading,
     );
@@ -857,98 +859,98 @@ String? userType;
       builder: (context, data, child) {
         return data
             ? Container(
-                width: double.infinity,
-                child: Shimmer.fromColors(
-                    baseColor: Theme.of(context).colorScheme.simmerBase,
-                    highlightColor: Theme.of(context).colorScheme.simmerHigh,
-                    child: catLoading()))
+            width: double.infinity,
+            child: Shimmer.fromColors(
+                baseColor: Theme.of(context).colorScheme.simmerBase,
+                highlightColor: Theme.of(context).colorScheme.simmerHigh,
+                child: catLoading()))
             : Container(
-                height: 120,
-                padding: const EdgeInsets.only(top: 10, left: 10),
-                child: ListView.builder(
-                  itemCount: catList.length < 10 ? catList.length : 10,
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
+          height: 120,
+          padding: const EdgeInsets.only(top: 10, left: 10),
+          child: ListView.builder(
+            itemCount: catList.length < 10 ? catList.length : 10,
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            physics: AlwaysScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
 
-                      return Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 10),
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (catList[index].subList == null ||
-                                catList[index].subList!.length == 0) {
-                              await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductList(
-                                      name: catList[index].name,
-                                      catId: catList[index].id,
-                                      tag: false,
-                                      fromSeller: false,
-                                    ),
-                                  ));
-                            } else {
-                              await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SubCategory(
-                                      catImage: catList[index].banner,
-                                      title: catList[index].name!,
-                                      subList: catList[index].subList,
-                                      catId: catList[index].id,
-                                    ),
-                                  ));
-                            }
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsetsDirectional.only(
-                                    bottom: 5.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100.0),
-                                  child: new FadeInImage(
-                                    fadeInDuration: Duration(milliseconds: 150),
-                                    image: CachedNetworkImageProvider(
-                                      catList[index].image!,
-                                    ),
-                                    height: 60.0,
-                                    width: 60.0,
-                                    fit: BoxFit.fill,
-                                    imageErrorBuilder:
-                                        (context, error, stackTrace) =>
-                                            erroWidget(50),
-                                    placeholder: placeHolder(50),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                child: Text(
-                                  catList[index].name!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .fontColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12),
-                                    maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                ),
-                                width: 50,
-                              ),
-                            ],
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(end: 10),
+                child: GestureDetector(
+                  onTap: () async {
+                    if (catList[index].subList == null ||
+                        catList[index].subList!.length == 0) {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductList(
+                              name: catList[index].name,
+                              catId: catList[index].id,
+                              tag: false,
+                              fromSeller: false,
+                            ),
+                          ));
+                    } else {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SubCategory(
+                              catImage: catList[index].banner,
+                              title: catList[index].name!,
+                              subList: catList[index].subList,
+                              catId: catList[index].id,
+                            ),
+                          ));
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                            bottom: 5.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100.0),
+                          child: new FadeInImage(
+                            fadeInDuration: Duration(milliseconds: 150),
+                            image: CachedNetworkImageProvider(
+                              catList[index].image!,
+                            ),
+                            height: 60.0,
+                            width: 60.0,
+                            fit: BoxFit.fill,
+                            imageErrorBuilder:
+                                (context, error, stackTrace) =>
+                                erroWidget(50),
+                            placeholder: placeHolder(50),
                           ),
                         ),
-                      );
-                  },
+                      ),
+                      Container(
+                        child: Text(
+                          catList[index].name!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .fontColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12),
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                        width: 50,
+                      ),
+                    ],
+                  ),
                 ),
               );
+            },
+          ),
+        );
       },
       selector: (_, homeProvider) => homeProvider.catLoading,
     );
@@ -970,7 +972,7 @@ String? userType;
 
     UserProvider user = Provider.of<UserProvider>(context, listen: false);
     SettingProvider setting =
-        Provider.of<SettingProvider>(context, listen: false);
+    Provider.of<SettingProvider>(context, listen: false);
 
     user.setUserId(setting.userId);
 
@@ -1035,10 +1037,10 @@ String? userType;
   }
 
   void getOfferImages() {
-     Map parameter = {
+    Map parameter = {
       USER_ID: CUR_USERID,
     };
-      print("offer parameter ${parameter} and ${getOfferImageApi}");
+    print("offer parameter ${parameter} and ${getOfferImageApi}");
     apiBaseHelper.postAPICall(getOfferImageApi, parameter).then((getdata) {
       bool error = getdata["error"];
       String? msg = getdata["message"];
@@ -1050,7 +1052,6 @@ String? userType;
       } else {
         setSnackbar(msg!, context);
       }
-
       context.read<HomeProvider>().setOfferLoading(false);
     }, onError: (error) {
       setSnackbar(error.toString(), context);
@@ -1137,7 +1138,7 @@ String? userType;
 
         UserProvider user = Provider.of<UserProvider>(context, listen: false);
         SettingProvider setting =
-            Provider.of<SettingProvider>(context, listen: false);
+        Provider.of<SettingProvider>(context, listen: false);
         user.setMobile(setting.mobile);
         user.setName(setting.userName);
         user.setEmail(setting.email);
@@ -1179,8 +1180,8 @@ String? userType;
         var parameter = {USER_ID: CUR_USERID, SAVE_LATER: save};
 
         Response response =
-            await post(getCartApi, body: parameter, headers: headers)
-                .timeout(Duration(seconds: timeOut));
+        await post(getCartApi, body: parameter, headers: headers)
+            .timeout(Duration(seconds: timeOut));
 
         var getdata = json.decode(response.body);
         bool error = getdata["error"];
@@ -1245,54 +1246,54 @@ String? userType;
   updateDailog() async {
     await dialogAnimate(context,
         StatefulBuilder(builder: (BuildContext context, StateSetter setStater) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5.0))),
-        title: Text(getTranslated(context, 'UPDATE_APP')!),
-        content: Text(
-          getTranslated(context, 'UPDATE_AVAIL')!,
-          style: Theme.of(this.context)
-              .textTheme
-              .subtitle1!
-              .copyWith(color: Theme.of(context).colorScheme.fontColor),
-        ),
-        actions: <Widget>[
-          new TextButton(
-              child: Text(
-                getTranslated(context, 'NO')!,
-                style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
-                    color: Theme.of(context).colorScheme.lightBlack,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              }),
-          new TextButton(
-              child: Text(
-                getTranslated(context, 'YES')!,
-                style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
-                    color: Theme.of(context).colorScheme.fontColor,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () async {
-                Navigator.of(context).pop(false);
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            title: Text(getTranslated(context, 'UPDATE_APP')!),
+            content: Text(
+              getTranslated(context, 'UPDATE_AVAIL')!,
+              style: Theme.of(this.context)
+                  .textTheme
+                  .subtitle1!
+                  .copyWith(color: Theme.of(context).colorScheme.fontColor),
+            ),
+            actions: <Widget>[
+              new TextButton(
+                  child: Text(
+                    getTranslated(context, 'NO')!,
+                    style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
+                        color: Theme.of(context).colorScheme.lightBlack,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  }),
+              new TextButton(
+                  child: Text(
+                    getTranslated(context, 'YES')!,
+                    style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
+                        color: Theme.of(context).colorScheme.fontColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () async {
+                    Navigator.of(context).pop(false);
 
-                String _url = '';
-                if (Platform.isAndroid) {
-                  _url = androidLink + packageName;
-                } else if (Platform.isIOS) {
-                  _url = iosLink;
-                }
+                    String _url = '';
+                    if (Platform.isAndroid) {
+                      _url = androidLink + packageName;
+                    } else if (Platform.isIOS) {
+                      _url = iosLink;
+                    }
 
-                if (await canLaunch(_url)) {
-                  await launch(_url);
-                } else {
-                  throw 'Could not launch $_url';
-                }
-              })
-        ],
-      );
-    }));
+                    if (await canLaunch(_url)) {
+                      await launch(_url);
+                    } else {
+                      throw 'Could not launch $_url';
+                    }
+                  })
+            ],
+          );
+        }));
   }
 
   Widget homeShimmer() {
@@ -1303,12 +1304,12 @@ String? userType;
         highlightColor: Theme.of(context).colorScheme.simmerHigh,
         child: SingleChildScrollView(
             child: Column(
-          children: [
-            catLoading(),
-            sliderLoading(),
-            sectionLoading(),
-          ],
-        )),
+              children: [
+                catLoading(),
+                sliderLoading(),
+                sectionLoading(),
+              ],
+            )),
       ),
     );
   }
@@ -1338,11 +1339,11 @@ String? userType;
           width: double.maxFinite,
           fit: BoxFit.contain,
           imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                "assets/images/Logo.png",
+            "assets/images/Logo.png",
             fit: BoxFit.contain,
-                height: height,
-                color: colors.primary,
-              ),
+            height: height,
+            color: colors.primary,
+          ),
           placeholderErrorBuilder: (context, error, stackTrace) =>
               Image.asset(
                 "assets/images/sliderph.png",
@@ -1413,14 +1414,14 @@ String? userType;
             child: Row(
                 children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                     .map((_) => Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.white,
-                            shape: BoxShape.circle,
-                          ),
-                          width: 50.0,
-                          height: 50.0,
-                        ))
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.white,
+                    shape: BoxShape.circle,
+                  ),
+                  width: 50.0,
+                  height: 50.0,
+                ))
                     .toList()),
           ),
         ),
@@ -1490,7 +1491,7 @@ String? userType;
                     ? getTranslated(context, 'SELOC')!
                     : getTranslated(context, 'DELIVERTO')! + data,
                 style:
-                    TextStyle(color: Theme.of(context).colorScheme.fontColor),
+                TextStyle(color: Theme.of(context).colorScheme.fontColor),
               );
             },
             selector: (_, provider) => provider.curPincode,
@@ -1512,109 +1513,109 @@ String? userType;
         builder: (builder) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
-              child: ListView(shrinkWrap: true, children: [
-                Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, right: 20, bottom: 40, top: 30),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: Form(
-                          key: _formkey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Icon(Icons.close),
-                                ),
-                              ),
-                              TextFormField(
-                                keyboardType: TextInputType.text,
-                                textCapitalization: TextCapitalization.words,
-                                validator: (val) => validatePincode(val!,
-                                    getTranslated(context, 'PIN_REQUIRED')),
-                                onSaved: (String? value) {
-                                  context
-                                      .read<UserProvider>()
-                                      .setPincode(value!);
-                                },
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2!
-                                    .copyWith(
+                return Container(
+                  constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.9),
+                  child: ListView(shrinkWrap: true, children: [
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 20, bottom: 40, top: 30),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: Form(
+                              key: _formkey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Icon(Icons.close),
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.text,
+                                    textCapitalization: TextCapitalization.words,
+                                    validator: (val) => validatePincode(val!,
+                                        getTranslated(context, 'PIN_REQUIRED')),
+                                    onSaved: (String? value) {
+                                      context
+                                          .read<UserProvider>()
+                                          .setPincode(value!);
+                                    },
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2!
+                                        .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .fontColor),
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  prefixIcon: Icon(Icons.location_on),
-                                  hintText:
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      prefixIcon: Icon(Icons.location_on),
+                                      hintText:
                                       getTranslated(context, 'PINCODEHINT_LBL'),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      margin:
-                                          EdgeInsetsDirectional.only(start: 20),
-                                      width: deviceWidth! * 0.35,
-                                      child: OutlinedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<UserProvider>()
-                                              .setPincode('');
-
-                                          context
-                                              .read<HomeProvider>()
-                                              .setSecLoading(true);
-                                          getSection();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                            getTranslated(context, 'All')!),
-                                      ),
                                     ),
-                                    Spacer(),
-                                    SimBtn(
-                                        size: 0.35,
-                                        title: getTranslated(context, 'APPLY'),
-                                        onBtnSelected: () async {
-                                          if (validateAndSave()) {
-                                            // validatePin(curPin);
-                                            context
-                                                .read<HomeProvider>()
-                                                .setSecLoading(true);
-                                            getSection();
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin:
+                                          EdgeInsetsDirectional.only(start: 20),
+                                          width: deviceWidth! * 0.35,
+                                          child: OutlinedButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<UserProvider>()
+                                                  .setPincode('');
 
-                                            context
-                                                .read<HomeProvider>()
-                                                .setSellerLoading(true);
-                                            // getSeller();
+                                              context
+                                                  .read<HomeProvider>()
+                                                  .setSecLoading(true);
+                                              getSection();
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                                getTranslated(context, 'All')!),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        SimBtn(
+                                            size: 0.35,
+                                            title: getTranslated(context, 'APPLY'),
+                                            onBtnSelected: () async {
+                                              if (validateAndSave()) {
+                                                // validatePin(curPin);
+                                                context
+                                                    .read<HomeProvider>()
+                                                    .setSecLoading(true);
+                                                getSection();
 
-                                            Navigator.pop(context);
-                                          }
-                                        }),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )),
-                    ))
-              ]),
-            );
-            //});
-          });
+                                                context
+                                                    .read<HomeProvider>()
+                                                    .setSellerLoading(true);
+                                                // getSeller();
+
+                                                Navigator.pop(context);
+                                              }
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ))
+                  ]),
+                );
+                //});
+              });
         });
   }
 
@@ -1687,7 +1688,6 @@ String? userType;
       } else {
         setSnackbar(msg!, context);
       }
-
       context.read<HomeProvider>().setCatLoading(false);
     }, onError: (error) {
       setSnackbar(error.toString(), context);
@@ -1699,64 +1699,64 @@ String? userType;
     return Column(
         children: [0, 1, 2, 3, 4]
             .map((_) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 40),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 5),
-                                width: double.infinity,
-                                height: 18.0,
-                                color: Theme.of(context).colorScheme.white,
-                              ),
-                              GridView.count(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                childAspectRatio: 1.0,
-                                physics: NeverScrollableScrollPhysics(),
-                                mainAxisSpacing: 5,
-                                crossAxisSpacing: 5,
-                                children: List.generate(
-                                  4,
-                                  (index) {
-                                    return Container(
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      color:
-                                          Theme.of(context).colorScheme.white,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 40),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
                       ),
                     ),
-                    sliderLoading()
-                    //offerImages.length > index ? _getOfferImage(index) : Container(),
-                  ],
-                ))
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        width: double.infinity,
+                        height: 18.0,
+                        color: Theme.of(context).colorScheme.white,
+                      ),
+                      GridView.count(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        crossAxisCount: 2,
+                        shrinkWrap: true,
+                        childAspectRatio: 1.0,
+                        physics: NeverScrollableScrollPhysics(),
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                        children: List.generate(
+                          4,
+                              (index) {
+                            return Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              color:
+                              Theme.of(context).colorScheme.white,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            sliderLoading()
+            //offerImages.length > index ? _getOfferImage(index) : Container(),
+          ],
+        ))
             .toList());
   }
 
@@ -1773,13 +1773,11 @@ String? userType;
       String? msg = getdata["message"];
       if (!error) {
         var data = getdata["data"];
-
         sellerList =
             (data as List).map((data) => new Product.fromSeller(data)).toList();
       } else {
         setSnackbar(msg!, context);
       }
-
       context.read<HomeProvider>().setSellerLoading(false);
     }, onError: (error) {
       setSnackbar(error.toString(), context);
@@ -1792,125 +1790,126 @@ String? userType;
       builder: (context, data, child) {
         return data
             ? Container(
-                width: double.infinity,
-                child: Shimmer.fromColors(
-                    baseColor: Theme.of(context).colorScheme.simmerBase,
-                    highlightColor: Theme.of(context).colorScheme.simmerHigh,
-                    child: catLoading()))
+            width: double.infinity,
+            child: Shimmer.fromColors(
+                baseColor: Theme.of(context).colorScheme.simmerBase,
+                highlightColor: Theme.of(context).colorScheme.simmerHigh,
+                child: catLoading()))
             : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(getTranslated(context, 'SHOP_BY_SELLER')!,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.fontColor,
-                                fontWeight: FontWeight.bold)),
-                        GestureDetector(
-                          child: Text(getTranslated(context, 'VIEW_ALL')!),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SellerList()));
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 100,
-                    padding: const EdgeInsets.only(top: 10, left: 10),
-                    child: ListView.builder(
-                      itemCount: sellerList.length,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      physics: AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsetsDirectional.only(end: 10),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SellerProfile(
-                                            sellerStoreName:
-                                                sellerList[index].store_name ??
-                                                    "",
-                                            sellerRating: sellerList[index]
-                                                    .seller_rating ??
-                                                "",
-                                            sellerImage: sellerList[index]
-                                                    .seller_profile ??
-                                                "",
-                                            sellerName:
-                                                sellerList[index].seller_name ??
-                                                    "",
-                                            sellerID:
-                                                sellerList[index].seller_id,
-                                            storeDesc: sellerList[index]
-                                                .store_description,
-                                          )));
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.only(
-                                      bottom: 5.0),
-                                  child: new ClipRRect(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    child: new FadeInImage(
-                                      fadeInDuration:
-                                          Duration(milliseconds: 150),
-                                      image: CachedNetworkImageProvider(
-                                        sellerList[index].seller_profile!,
-                                      ),
-                                      height: 50.0,
-                                      width: 50.0,
-                                      fit: BoxFit.contain,
-                                      imageErrorBuilder:
-                                          (context, error, stackTrace) =>
-                                              erroWidget(50),
-                                      placeholder: placeHolder(50),
-                                    ),
-                                  ),
+                  Text(getTranslated(context, 'SHOP_BY_SELLER')!,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.fontColor,
+                          fontWeight: FontWeight.bold)),
+                  GestureDetector(
+                    child: Text(getTranslated(context, 'VIEW_ALL')!),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SellerList()));
+                    },
+                  )
+                ],
+              ),
+            ),
+            Container(
+              height: 100,
+              padding: const EdgeInsets.only(top: 10, left: 10),
+              child: ListView.builder(
+                itemCount: sellerList.length,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SellerProfile(
+                                  sellerStoreName:
+                                  sellerList[index].store_name ??
+                                      "",
+                                  sellerRating: sellerList[index]
+                                      .seller_rating ??
+                                      "",
+                                  sellerImage: sellerList[index]
+                                      .seller_profile ??
+                                      "",
+                                  sellerName:
+                                  sellerList[index].seller_name ??
+                                      "",
+                                  sellerID:
+                                  sellerList[index].seller_id,
+                                  storeDesc: sellerList[index]
+                                      .store_description,
+                                )));
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                                bottom: 5.0),
+                            child: new ClipRRect(
+                              borderRadius: BorderRadius.circular(25.0),
+                              child: new FadeInImage(
+                                fadeInDuration:
+                                Duration(milliseconds: 150),
+                                image: CachedNetworkImageProvider(
+                                  sellerList[index].seller_profile!,
                                 ),
-                                Container(
-                                  child: Text(
-                                    sellerList[index].seller_name!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .fontColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 10),
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  width: 50,
-                                ),
-                              ],
+                                height: 50.0,
+                                width: 50.0,
+                                fit: BoxFit.contain,
+                                imageErrorBuilder:
+                                    (context, error, stackTrace) =>
+                                    erroWidget(50),
+                                placeholder: placeHolder(50),
+                              ),
                             ),
                           ),
-                        );
-                      },
+                          Container(
+                            child: Text(
+                              sellerList[index].seller_name!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .fontColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 10),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                            width: 50,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
+                  );
+                },
+              ),
+            ),
+          ],
+        );
       },
       selector: (_, homeProvider) => homeProvider.sellerLoading,
     );
   }
 }
+

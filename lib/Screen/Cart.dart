@@ -1062,7 +1062,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                 : Container(),
                           ],
                         ),
-                  userType == "retail" || userType == "wholeseller" ? SizedBox() :  Container(
+                  userType == "retail" || userType == "wholeseller" || userType == "wholeSeller" || userType == "whole-seller" ? SizedBox() :  Container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
