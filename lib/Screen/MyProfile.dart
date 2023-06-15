@@ -47,7 +47,7 @@ class StateProfile extends State<MyProfile> with TickerProviderStateMixin {
   var isDarkTheme;
   bool isDark = false;
   late ThemeNotifier themeNotifier;
-  List<String> langCode = ["en","hi", "zh", "es",  "ar", "ru", "ja", "de"];
+  List<String> langCode = ["en", "hi", "zh", "es", "ar", "ru", "ja", "de"];
   List<String?> themeList = [];
   List<String?> languageList = [];
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -536,19 +536,22 @@ class StateProfile extends State<MyProfile> with TickerProviderStateMixin {
           width: 25,
           color: colors.primary,
         ),
-
         dense: true,
         title: Text(
           title,
           style: TextStyle(
-              color: Theme.of(context).colorScheme.lightBlack, fontSize: 15,fontFamily:'Lora'),
+              color: Theme.of(context).colorScheme.lightBlack,
+              fontSize: 15,
+              fontFamily: 'Lora'),
         ),
         onTap: () {
           if (title == getTranslated(context, 'MY_ORDERS_LBL')) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MyOrder(),
+                builder: (context) => MyOrder(
+                  fromBottom: false,
+                ),
               ),
             );
 

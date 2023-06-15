@@ -580,7 +580,7 @@ class _SaleState extends State<Sale>
                           MaterialPageRoute(
                             builder: (context) => ProductList(
                               name: getTranslated(context, 'OFFER'),
-                              id: '',
+                             // id: '',
                               tag: false,
                               dis: disList[curDis],
                               fromSeller: false,
@@ -662,10 +662,10 @@ class _SaleState extends State<Sale>
 
           //  offset = offset + perPage;
         } else {
-          if (msg != "Products Not Found !") setSnackbar(msg!, context);
+         // if (msg != "Products Not Found !") setSnackbar(msg!, context);
         }
       } else {
-        if (msg != "Products Not Found !") setSnackbar(msg!, context);
+        //if (msg != "Products Not Found !") setSnackbar(msg!, context);
       }
 
       setState(() {
@@ -673,7 +673,7 @@ class _SaleState extends State<Sale>
       });
       // context.read<ProductListProvider>().setProductLoading(false);
     }, onError: (error) {
-      setSnackbar(error.toString(), context);
+  //    setSnackbar(error.toString(), context);
       setState(() {
         _productLoading = false;
       });
@@ -708,6 +708,7 @@ class _SaleState extends State<Sale>
     String curPin = context.read<UserProvider>().curPincode;
     if (curPin != '') parameter[ZIPCODE] = curPin;
 
+    print("get section here ${getSectionApi} and ${parameter}");
     apiBaseHelper.postAPICall(getSectionApi, parameter).then((getdata) {
       bool error = getdata["error"];
       String? msg = getdata["message"];
@@ -720,13 +721,13 @@ class _SaleState extends State<Sale>
             .toList();
       } else {
         if (curPin != '') context.read<UserProvider>().setPincode('');
-        setSnackbar(msg!, context);
+      //  setSnackbar(msg!, context);
       }
       setState(() {
         _loading = false;
       });
     }, onError: (error) {
-      setSnackbar(error.toString(), context);
+    //  setSnackbar(error.toString(), context);
       setState(() {
         _loading = false;
       });

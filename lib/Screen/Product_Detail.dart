@@ -50,7 +50,6 @@ import 'Search.dart';
 import 'Seller_Details.dart';
 import 'package:http/http.dart' as http;
 
-
 enum Share {
   facebook,
   messenger,
@@ -62,6 +61,7 @@ enum Share {
   share_instagram,
   share_telegram
 }
+
 class ProductDetail extends StatefulWidget {
   final Product? model;
 
@@ -107,7 +107,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
   late AnimationController _progressAnimcontroller;
 
   var isDarkTheme;
-  ShortDynamicLink ?shortenedLink;
+  ShortDynamicLink? shortenedLink;
   String? shareLink;
   late String curPin;
   late double growStepWidth, beginWidth, endWidth = 0.0;
@@ -116,7 +116,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
   var addonPrice;
 
   var userType;
-  getSaved()async{
+  getSaved() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userType = prefs.getString('user_type');
   }
@@ -124,7 +124,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 300),(){
+    Future.delayed(Duration(milliseconds: 300), () {
       return getSaved();
     });
 
@@ -149,17 +149,16 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
     revImgList.clear();
     if (widget.model!.reviewList!.length > 0)
       for (int i = 0;
-      i < widget.model!.reviewList![0].productRating!.length;
-      i++) {
+          i < widget.model!.reviewList![0].productRating!.length;
+          i++) {
         for (int j = 0;
-        j < widget.model!.reviewList![0].productRating![i].imgList!.length;
-        j++) {
+            j < widget.model!.reviewList![0].productRating![i].imgList!.length;
+            j++) {
           imgModel m = imgModel.fromJson(
               i, widget.model!.reviewList![0].productRating![i].imgList![j]);
           revImgList.add(m);
         }
       }
-
 
     getShare();
 
@@ -198,7 +197,6 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
       ),
     ));
   }
-
 
   _setProgressAnim(double maxWidth, int curPageIndex) {
     setState(() {
@@ -245,12 +243,12 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
       final response1 = await get(Uri.parse(widget.model!.image!));
       final bytes1 = response1.bodyBytes;
       final File imageFile =
-      File('$documentDirectory/${widget.model!.name}.png');
+          File('$documentDirectory/${widget.model!.name}.png');
       imageFile.writeAsBytesSync(bytes1);
-     // Share.shareFiles(['$documentDirectory/${widget.model!.name}.png'],
-     //      text:
-     //      "${widget.model!.name}\n${shortenedLink!.shortUrl.toString()}\n$shareLink"
-     //  );
+      // Share.shareFiles(['$documentDirectory/${widget.model!.name}.png'],
+      //      text:
+      //      "${widget.model!.name}\n${shortenedLink!.shortUrl.toString()}\n$shareLink"
+      //  );
     } catch (e) {
       print("error here" + e.toString());
     }
@@ -327,11 +325,11 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
       key: _scaffoldKey,
       body: _isNetworkAvail
           ? Stack(
-        children: <Widget>[
-          _showContent(),
-          showCircularProgress(_isProgress, colors.primary),
-        ],
-      )
+              children: <Widget>[
+                _showContent(),
+                showCircularProgress(_isProgress, colors.primary),
+              ],
+            )
           : noInternet(context),
     );
   }
@@ -411,7 +409,6 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                             erroWidget(height),
                         //  fit: extendImg ? BoxFit.fill : BoxFit.contain,
                       ),
-
                       index == 1 ? playIcon() : Container()
                     ],
                   );
@@ -480,43 +477,43 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
               ),
               child: widget.model!.isFavLoading!
                   ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 0.7,
-                    )),
-              )
-                  : Selector<FavoriteProvider, List<String?>>(
-                builder: (context, data, child) {
-                  // print("object*****${data[0].id}***${widget.model!.id}");
-
-                  return InkWell(
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            !data.contains(widget.model!.id)
-                                ? Icons.favorite_border
-                                : Icons.favorite,
-                            size: 20,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 0.7,
                           )),
-                      onTap: () {
-                        if (CUR_USERID != null) {
-                          !data.contains(widget.model!.id)
-                              ? _setFav(-1)
-                              : _removeFav(-1);
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Login()),
-                          );
-                        }
-                      });
-                },
-                selector: (_, provider) => provider.favIdList,
-              )),
+                    )
+                  : Selector<FavoriteProvider, List<String?>>(
+                      builder: (context, data, child) {
+                        // print("object*****${data[0].id}***${widget.model!.id}");
+
+                        return InkWell(
+                            child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  !data.contains(widget.model!.id)
+                                      ? Icons.favorite_border
+                                      : Icons.favorite,
+                                  size: 20,
+                                )),
+                            onTap: () {
+                              if (CUR_USERID != null) {
+                                !data.contains(widget.model!.id)
+                                    ? _setFav(-1)
+                                    : _removeFav(-1);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Login()),
+                                );
+                              }
+                            });
+                      },
+                      selector: (_, provider) => provider.favIdList,
+                    )),
         ),
       ),
     );
@@ -526,21 +523,21 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
     String? indicator = widget.model!.indicator;
     return Positioned.fill(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Align(
-              alignment: Alignment.bottomLeft,
-              child: indicator == "1"
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+          alignment: Alignment.bottomLeft,
+          child: indicator == "1"
+              ? SvgPicture.asset(
+                  "assets/images/vag.svg",
+                  color: colors.primary,
+                )
+              : indicator == "2"
                   ? SvgPicture.asset(
-                "assets/images/vag.svg",
-                color: colors.primary,
-              )
-                  : indicator == "2"
-                  ? SvgPicture.asset(
-                "assets/images/nonvag.svg",
-                color: colors.primary,
-              )
+                      "assets/images/nonvag.svg",
+                      color: colors.primary,
+                    )
                   : Container()),
-        ));
+    ));
   }
 
   _rate() {
@@ -585,7 +582,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
       price = double.parse(widget.model!.prVarientList![pos].price!);
 
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -603,68 +600,69 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
               ),
               from
                   ? Padding(
-                padding: const EdgeInsetsDirectional.only(
-                    start: 3.0, bottom: 5, top: 3),
-                child: widget.model!.availability == "0"
-                    ? Container()
-                    : Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.remove,
-                            size: 15,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        if (_isProgress == false &&
-                            (int.parse(qtyController.text)) > 0)
-                          removeFromCart();
-                      },
-                    ),
-                    Container(
-                      width: 37,
-                      height: 20,
-                      color: Colors.transparent,
-                      child: Stack(
-                        children: [
-                          Selector<CartProvider,
-                              Tuple2<List<String?>, List<String?>>>(
-                            builder: (context, data, child) {
-                              qtyController.text =
-                              data.item1.contains(widget.model!.id)
-                                  ? data.item2[data.item1
-                                  .indexWhere((element) =>
-                              element ==
-                                  widget.model!.id)]
-                                  .toString()
-                                  : "0";
-                              return TextField(
-                                textAlign: TextAlign.center,
-                                readOnly: true,
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .fontColor,
-                                    fontWeight: FontWeight.bold),
-                                controller: qtyController,
-                                // _controller[index],
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
+                      padding: const EdgeInsetsDirectional.only(
+                          start: 3.0, bottom: 5, top: 3),
+                      child: widget.model!.availability == "0"
+                          ? Container()
+                          : Row(
+                              children: <Widget>[
+                                GestureDetector(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        Icons.remove,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    if (_isProgress == false &&
+                                        (int.parse(qtyController.text)) > 0)
+                                      removeFromCart();
+                                  },
                                 ),
-                              );
-                            },
-                            selector: (_, provider) => Tuple2(
-                                provider.cartIdList, provider.qtyList),
-                          ),
-                          /*    TextField(
+                                Container(
+                                  width: 37,
+                                  height: 20,
+                                  color: Colors.transparent,
+                                  child: Stack(
+                                    children: [
+                                      Selector<CartProvider,
+                                          Tuple2<List<String?>, List<String?>>>(
+                                        builder: (context, data, child) {
+                                          qtyController.text = data.item1
+                                                  .contains(widget.model!.id)
+                                              ? data.item2[data.item1
+                                                      .indexWhere((element) =>
+                                                          element ==
+                                                          widget.model!.id)]
+                                                  .toString()
+                                              : "0";
+                                          return TextField(
+                                            textAlign: TextAlign.center,
+                                            readOnly: true,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .fontColor,
+                                                fontWeight: FontWeight.bold),
+                                            controller: qtyController,
+                                            // _controller[index],
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                            ),
+                                          );
+                                        },
+                                        selector: (_, provider) => Tuple2(
+                                            provider.cartIdList,
+                                            provider.qtyList),
+                                      ),
+                                      /*    TextField(
                                 textAlign: TextAlign.center,
                                 readOnly: true,
                                 style: TextStyle(
@@ -676,184 +674,210 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                                   border: InputBorder.none,
                                 ),
                               ),*/
-                          PopupMenuButton<String>(
-                            tooltip: '',
-                            icon: const Icon(
-                              Icons.arrow_drop_down,
-                              size: 1,
-                            ),
-                            onSelected: (String value) {
-                              if (_isProgress == false)
-                                addToCart(value, false);
-                            },
-                            itemBuilder: (BuildContext context) {
-                              return widget.model!.itemsCounter!
-                                  .map<PopupMenuItem<String>>(
-                                    (String value) {
-                                  return new PopupMenuItem(
-                                    child: new Text(
-                                      value,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .fontColor,
-                                        fontWeight: FontWeight.bold,
+                                      PopupMenuButton<String>(
+                                        tooltip: '',
+                                        icon: const Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 1,
+                                        ),
+                                        onSelected: (String value) {
+                                          if (_isProgress == false)
+                                            addToCart(value, false);
+                                        },
+                                        itemBuilder: (BuildContext context) {
+                                          return widget.model!.itemsCounter!
+                                              .map<PopupMenuItem<String>>(
+                                            (String value) {
+                                              return new PopupMenuItem(
+                                                child: new Text(
+                                                  value,
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .fontColor,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                value: value,
+                                              );
+                                            },
+                                          ).toList();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ), // ),
+
+                                GestureDetector(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 15,
                                       ),
                                     ),
-                                    value: value,
-                                  );
-                                },
-                              ).toList();
-                            },
-                          ),
-                        ],
-                      ),
-                    ), // ),
-
-                    GestureDetector(
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.add,
-                            size: 15,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        if (_isProgress == false)
-                          addToCart(
-                              (int.parse(qtyController.text) +
-                                  int.parse(
-                                      widget.model!.qtyStepSize!))
-                                  .toString(),
-                              false);
-                      },
+                                  ),
+                                  onTap: () {
+                                    if (_isProgress == false)
+                                      addToCart(
+                                          (int.parse(qtyController.text) +
+                                                  int.parse(widget
+                                                      .model!.qtyStepSize!))
+                                              .toString(),
+                                          false);
+                                  },
+                                )
+                              ],
+                            ),
                     )
-                  ],
-                ),
-              )
                   : Container(),
             ],
           ),
-          userType == "reseller" ?    Align(
-            alignment: Alignment.centerLeft,
-            child: Row(
-              children: [
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width/2.5,
-                  child: TextFormField(
-                    controller: editPriceController,
-                      onChanged: (v){
-                      var result = (price.toInt() * int.parse(v.toString()))/100;
-                      print("checking result here ${result}");
-                      setState(() {
-                        addonPrice = result.toInt() + price.toInt();
-                      });
-                      print("checking addon price here ${addonPrice}");
-                      },
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        hintText: "Input margin %",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        )
+          userType == "reseller"
+              ? Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        child: TextFormField(
+                          controller: editPriceController,
+                          onChanged: (v) {
+                            var result =
+                                (price.toInt() * int.parse(v.toString())) / 100;
+                            print("checking result here ${result}");
+                            setState(() {
+                              addonPrice = result.toInt() + price.toInt();
+                            });
+                            print("checking addon price here ${addonPrice}");
+                          },
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              hintText: "Enter margin %",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              )),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      addonPrice == null ||
+                              addonPrice == "" ||
+                              editPriceController.text.isEmpty
+                          ? SizedBox.shrink()
+                          : Text("OFFER PRICE : \u{20B9} ${addonPrice}")
+                      // ElevatedButton(
+                      //
+                      //     onPressed: (){
+                      //       addToCart("0",true);
+                      //     }, child: Text("Add",style: TextStyle(color: Colors.white),)),
+                    ],
+                  ),
+                )
+              : SizedBox(),
+          userType == "reseller"
+              ? InkWell(
+                  onTap: () async {
+                    var i, path;
+                    for (i = 0; i < sliderList.length; i++) {
+                      final uri = Uri.parse(sliderList[0].toString());
+                      final res = await http.get(uri);
+                      final bytes = res.bodyBytes;
+                      final temp = await getExternalStorageDirectory();
+                      final String imageName =
+                          sliderList[0].toString().split('/').last;
+                      print("image name here ${imageName}");
+                      final path = '${temp!.path}/${imageName}';
+                      print("helllo ${path}");
+                      File(path).writeAsBytes(bytes);
+                      FlutterShare.shareFile(
+                          title: "hhsds",
+                          filePath: path,
+                          text: addonPrice == null || addonPrice == ""
+                              ? "${widget.model!.name} \n \u{20B9} ${price}"
+                              : "${widget.model!.name} \n  \u{20B9} ${addonPrice}");
+                    }
+                    // await WhatsappShare.shareFile(
+                    //     text: '${widget.model!.name} \n \u{20B9} ${price} \n',
+                    //     phone: '91 7977887460',
+                    //     filePath: [path]
+                    // );
+
+                    // var i;
+                    // List<String> path = [];
+                    // List<String> imgList = [];
+                    // for( i=0;i<sliderList.length;i++){
+                    //   imgList.add(sliderList[i].toString());
+                    //   final uri =  Uri.parse(imgList[i]);
+                    //   final  res = await http.get(uri);
+                    //   final bytes = res.bodyBytes;
+                    //   final temp = await getExternalStorageDirectory();
+                    //   final String imageName = imgList[i].split('/').last;
+                    //   //print("image name here ${imageName}");
+                    //   // path = '${temp!.path}/${imageName}';
+                    //   path.add('${temp!.path}/${imageName}');
+                    //  // print("helllo ${path}");
+                    //
+                    // }
+                    // await WhatsappShare.shareFile(
+                    //     text: ' ${widget.model!.name} \n \u{20B9} ${price} \n ${widget.model!.shortDescription}',
+                    //     phone: '91 7977887460',
+                    //     filePath: path
+                    // );
+
+                    // WhatsApp whatsapp = WhatsApp();
+                    //  whatsapp.messagesMediaByLink(
+                    //     to: 910000000000,
+                    //     mediaType:"video",
+                    //     mediaLink: "https://example.com/flutter.mp4",
+                    //     caption:"My Flutter Video"
+                    // );
+                    //  await FlutterShare.shareFile(title: "sds", filePath: path[0]);
+                    //await Share.shareFiles(path,text: "image text");
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 3),
+                    margin: EdgeInsets.only(top: 5),
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: colors.primary.withOpacity(0.7)),
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Share on",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.whatsapp,
+                          color: Colors.greenAccent,
+                          size: 20,
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          "& Earn More!",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(width: 10,),
-               addonPrice == null || addonPrice == "" || editPriceController.text.isEmpty ? SizedBox.shrink() : Text("OFFER PRICE : \u{20B9} ${addonPrice}")
-                // ElevatedButton(
-                //
-                //     onPressed: (){
-                //       addToCart("0",true);
-                //     }, child: Text("Add",style: TextStyle(color: Colors.white),)),
-              ],
-            ),
-          ) : SizedBox(),
-
-          userType == "reseller" ? InkWell(
-            onTap: ()async{
-                var i,path;
-                for(i=0;i<sliderList.length;i++){
-
-              final uri =  Uri.parse(sliderList[0].toString());
-              final  res = await http.get(uri);
-              final bytes = res.bodyBytes;
-              final temp = await getExternalStorageDirectory();
-              final String imageName = sliderList[0].toString().split('/').last;
-              print("image name here ${imageName}");
-              final path = '${temp!.path}/${imageName}';
-              print("helllo ${path}");
-              File(path).writeAsBytes(bytes);
-              FlutterShare.shareFile(title: "hhsds", filePath: path,text: addonPrice == null || addonPrice == "" ? "${widget.model!.name} \n \u{20B9} ${price}" : "${widget.model!.name} \n  \u{20B9} ${addonPrice}");
-                }
-                // await WhatsappShare.shareFile(
-                //     text: '${widget.model!.name} \n \u{20B9} ${price} \n',
-                //     phone: '91 7977887460',
-                //     filePath: [path]
-                // );
-
-
-              // var i;
-              // List<String> path = [];
-              // List<String> imgList = [];
-              // for( i=0;i<sliderList.length;i++){
-              //   imgList.add(sliderList[i].toString());
-              //   final uri =  Uri.parse(imgList[i]);
-              //   final  res = await http.get(uri);
-              //   final bytes = res.bodyBytes;
-              //   final temp = await getExternalStorageDirectory();
-              //   final String imageName = imgList[i].split('/').last;
-              //   //print("image name here ${imageName}");
-              //   // path = '${temp!.path}/${imageName}';
-              //   path.add('${temp!.path}/${imageName}');
-              //  // print("helllo ${path}");
-              //
-              // }
-              // await WhatsappShare.shareFile(
-              //     text: ' ${widget.model!.name} \n \u{20B9} ${price} \n ${widget.model!.shortDescription}',
-              //     phone: '91 7977887460',
-              //     filePath: path
-              // );
-
-              // WhatsApp whatsapp = WhatsApp();
-              //  whatsapp.messagesMediaByLink(
-              //     to: 910000000000,
-              //     mediaType:"video",
-              //     mediaLink: "https://example.com/flutter.mp4",
-              //     caption:"My Flutter Video"
-              // );
-            //  await FlutterShare.shareFile(title: "sds", filePath: path[0]);
-               //await Share.shareFiles(path,text: "image text");
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 3),
-              margin: EdgeInsets.only(top: 5),
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: colors.primary.withOpacity(0.7)
-              ),
-              width: MediaQuery.of(context).size.width/2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Share on",style: TextStyle(color: Colors.white),),
-                  SizedBox(width: 5,),
-                  Icon(Icons.whatsapp,color: Colors.greenAccent,size: 20,),
-                  SizedBox(width: 3,),
-                  Text("& Earn More!",style: TextStyle(color: Colors.white),),
-                ],
-              ),
-            ),
-          ) : SizedBox.shrink(),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );
@@ -934,26 +958,31 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
     if (price != 0) {
       double off = (double.parse(widget.model!.prVarientList![pos].price!) -
-          double.parse(widget.model!.prVarientList![pos].disPrice!))
+              double.parse(widget.model!.prVarientList![pos].disPrice!))
           .toDouble();
       off = off * 100 / double.parse(widget.model!.prVarientList![pos].price!);
 
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Row(
-          children: <Widget>[
-            Text(
-              CUR_CURRENCY! + " " + widget.model!.prVarientList![pos].price!,
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  decoration: TextDecoration.lineThrough, letterSpacing: 0),
-            ),
-            Text(" | " + off.toStringAsFixed(2) + "% off",
-                style: Theme.of(context)
-                    .textTheme
-                    .overline!
-                    .copyWith(color: colors.primary, letterSpacing: 0)),
-          ],
-        ),
+        child: off == "0.00" || off == 0.00
+            ? SizedBox.shrink()
+            : Row(
+                children: <Widget>[
+                  Text(
+                    CUR_CURRENCY! +
+                        " " +
+                        widget.model!.prVarientList![pos].price!,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        decoration: TextDecoration.lineThrough,
+                        letterSpacing: 0),
+                  ),
+                  Text(" | " + off.toStringAsFixed(2) + "% off",
+                      style: Theme.of(context)
+                          .textTheme
+                          .overline!
+                          .copyWith(color: colors.primary, letterSpacing: 0)),
+                ],
+              ),
       );
     } else {
       return Container();
@@ -976,9 +1005,9 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
   _desc() {
     return widget.model!.desc!.isNotEmpty
         ? Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Html(data: widget.model!.desc),
-    )
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Html(data: widget.model!.desc),
+          )
         : Container();
   }
 
@@ -994,61 +1023,61 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
             .split(',');
       }
       return widget.model!.prVarientList![widget.model!.selVarient!]
-          .attr_name !=
-          null &&
-          widget.model!.prVarientList![widget.model!.selVarient!].attr_name!
-              .isNotEmpty
+                      .attr_name !=
+                  null &&
+              widget.model!.prVarientList![widget.model!.selVarient!].attr_name!
+                  .isNotEmpty
           ? InkWell(
-        child: MediaQuery.removePadding(
-          removeTop: true,
-          context: context,
-          child: Card(
-            elevation: 0,
-            child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: att.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                      dense: true,
-                      trailing: Icon(Icons.keyboard_arrow_right),
-                      title: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                att[index].trim() + ":",
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2!
-                                    .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .fontColor),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                              EdgeInsetsDirectional.only(start: 5.0),
-                              child: Text(
-                                val[index],
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2!
-                                    .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .fontColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          ]));
-                }),
-          ),
-        ),
-        onTap: _chooseVarient,
-      )
+              child: MediaQuery.removePadding(
+                removeTop: true,
+                context: context,
+                child: Card(
+                  elevation: 0,
+                  child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: att.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            dense: true,
+                            trailing: Icon(Icons.keyboard_arrow_right),
+                            title: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      att[index].trim() + ":",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .fontColor),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsetsDirectional.only(start: 5.0),
+                                    child: Text(
+                                      val[index],
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .fontColor,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ]));
+                      }),
+                ),
+              ),
+              onTap: _chooseVarient,
+            )
           : Container();
     } else {
       return Container();
@@ -1065,71 +1094,71 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
         builder: (builder) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return Container(
-                  constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.9),
-                  child: ListView(shrinkWrap: true, children: [
-                    Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 30),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
-                          child: Form(
-                              key: _formkey,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Icon(Icons.close),
-                                    ),
-                                  ),
-                                  TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    textCapitalization: TextCapitalization.words,
-                                    validator: (val) => validatePincode(val!,
-                                        getTranslated(context, 'PIN_REQUIRED')),
-                                    onSaved: (String? value) {
-                                      if (value != null) curPin = value;
-                                    },
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle2!
-                                        .copyWith(
+            return Container(
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              child: ListView(shrinkWrap: true, children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 30),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: Form(
+                          key: _formkey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(Icons.close),
+                                ),
+                              ),
+                              TextFormField(
+                                keyboardType: TextInputType.text,
+                                textCapitalization: TextCapitalization.words,
+                                validator: (val) => validatePincode(val!,
+                                    getTranslated(context, 'PIN_REQUIRED')),
+                                onSaved: (String? value) {
+                                  if (value != null) curPin = value;
+                                },
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2!
+                                    .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .fontColor),
-                                    decoration: InputDecoration(
-                                      isDense: true,
-                                      prefixIcon: Icon(Icons.location_on),
-                                      hintText:
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  prefixIcon: Icon(Icons.location_on),
+                                  hintText:
                                       getTranslated(context, 'PINCODEHINT_LBL'),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: SimBtn(
-                                        size: 1.0,
-                                        title: getTranslated(context, 'APPLY'),
-                                        onBtnSelected: () async {
-                                          if (validateAndSave()) {
-                                            validatePin(curPin, false);
-                                          }
-                                        }),
-                                  ),
-                                ],
-                              )),
-                        ))
-                  ]),
-                );
-                //});
-              });
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: SimBtn(
+                                    size: 1.0,
+                                    title: getTranslated(context, 'APPLY'),
+                                    onBtnSelected: () async {
+                                      if (validateAndSave()) {
+                                        validatePin(curPin, false);
+                                      }
+                                    }),
+                              ),
+                            ],
+                          )),
+                    ))
+              ]),
+            );
+            //});
+          });
         });
   }
 
@@ -1153,31 +1182,31 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
         builder: (builder) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return Container(
-                  constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.9),
-                  child: ListView(shrinkWrap: true, children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _desc(),
-                        widget.model!.desc!.isNotEmpty ? Divider() : Container(),
-                        _attr(),
-                        widget.model!.attributeList!.isNotEmpty
-                            ? Divider()
-                            : Container(),
-                        _madeIn(),
-                        _warrenty(),
-                        _gaurantee(),
-                        _otherDetail(widget.model!.selVarient),
-                        _cancleable(),
-                      ],
-                    )
-                  ]),
-                );
-                //});
-              });
+            return Container(
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              child: ListView(shrinkWrap: true, children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _desc(),
+                    widget.model!.desc!.isNotEmpty ? Divider() : Container(),
+                    _attr(),
+                    widget.model!.attributeList!.isNotEmpty
+                        ? Divider()
+                        : Container(),
+                    _madeIn(),
+                    _warrenty(),
+                    _gaurantee(),
+                    _otherDetail(widget.model!.selVarient),
+                    _cancleable(),
+                  ],
+                )
+              ]),
+            );
+            //});
+          });
         });
   }
 
@@ -1202,7 +1231,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
       _oldSelVarient = widget.model!.selVarient;
     } else if (widget.model!.stockType == "2") {
       if (widget
-          .model!.prVarientList![widget.model!.selVarient!].availability ==
+              .model!.prVarientList![widget.model!.selVarient!].availability ==
           "1") {
         available = true;
         outOfStock = false;
@@ -1238,315 +1267,315 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
         builder: (builder) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return Container(
-                  constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.9),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          getTranslated(context, 'selectVarient')!,
-                          //   style: Theme.of(context).textTheme.headline6,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.fontColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
+            return Container(
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      getTranslated(context, 'selectVarient')!,
+                      //   style: Theme.of(context).textTheme.headline6,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.fontColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
-                      Divider(),
-                      _title(),
-                      available! || outOfStock!
-                          ? _price(selectIndex, false)
-                          : Container(),
-                      available! || outOfStock!
-                          ? _offPrice(_oldSelVarient)
-                          : Container(),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: widget.model!.attributeList!.length,
-                        itemBuilder: (context, index) {
-                          List<Widget?> chips = [];
-                          List<String> att =
+                    ),
+                  ),
+                  Divider(),
+                  _title(),
+                  available! || outOfStock!
+                      ? _price(selectIndex, false)
+                      : Container(),
+                  available! || outOfStock!
+                      ? _offPrice(_oldSelVarient)
+                      : Container(),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.model!.attributeList!.length,
+                    itemBuilder: (context, index) {
+                      List<Widget?> chips = [];
+                      List<String> att =
                           widget.model!.attributeList![index].value!.split(',');
-                          List<String> attId =
+                      List<String> attId =
                           widget.model!.attributeList![index].id!.split(',');
-                          List<String> attSType =
+                      List<String> attSType =
                           widget.model!.attributeList![index].sType!.split(',');
 
-                          List<String> attSValue = widget
-                              .model!.attributeList![index].sValue!
-                              .split(',');
+                      List<String> attSValue = widget
+                          .model!.attributeList![index].sValue!
+                          .split(',');
 
-                          int? varSelected;
+                      int? varSelected;
 
-                          List<String> wholeAtt = widget.model!.attrIds!.split(',');
-                          for (int i = 0; i < att.length; i++) {
-                            Widget itemLabel;
-                            if (attSType[i] == "1") {
-                              String clr = (attSValue[i].substring(1));
+                      List<String> wholeAtt = widget.model!.attrIds!.split(',');
+                      for (int i = 0; i < att.length; i++) {
+                        Widget itemLabel;
+                        if (attSType[i] == "1") {
+                          String clr = (attSValue[i].substring(1));
 
-                              String color = "0xff" + clr;
+                          String color = "0xff" + clr;
 
-                              itemLabel = Container(
-                                width: 25,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color(int.parse(color))),
-                              );
-                            } else if (attSType[i] == "2") {
-                              itemLabel = ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(attSValue[i],
-                                      width: 80,
-                                      height: 80,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          erroWidget(80)));
-                            } else {
-                              itemLabel = Text(att[i],
-                                  style: TextStyle(
-                                      color: _selectedIndex[index] == (i)
-                                          ? Theme.of(context).colorScheme.white
-                                          : Theme.of(context)
+                          itemLabel = Container(
+                            width: 25,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(int.parse(color))),
+                          );
+                        } else if (attSType[i] == "2") {
+                          itemLabel = ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(attSValue[i],
+                                  width: 80,
+                                  height: 80,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      erroWidget(80)));
+                        } else {
+                          itemLabel = Text(att[i],
+                              style: TextStyle(
+                                  color: _selectedIndex[index] == (i)
+                                      ? Theme.of(context).colorScheme.white
+                                      : Theme.of(context)
                                           .colorScheme
                                           .fontColor));
-                            }
+                        }
 
-                            if (_selectedIndex[index] != null) if (wholeAtt
-                                .contains(attId[i])) {
-                              choiceChip = ChoiceChip(
-                                selected: _selectedIndex.length > index
-                                    ? _selectedIndex[index] == i
-                                    : false,
-                                label: itemLabel,
-                                selectedColor: colors.primary,
-                                backgroundColor:
+                        if (_selectedIndex[index] != null) if (wholeAtt
+                            .contains(attId[i])) {
+                          choiceChip = ChoiceChip(
+                            selected: _selectedIndex.length > index
+                                ? _selectedIndex[index] == i
+                                : false,
+                            label: itemLabel,
+                            selectedColor: colors.primary,
+                            backgroundColor:
                                 Theme.of(context).colorScheme.white,
-                                labelPadding: EdgeInsets.all(0),
-                                //selectedColor: Theme.of(context).colorScheme.fontColor.withOpacity(0.1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      attSType[i] == "1" ? 100 : 10),
-                                  side: BorderSide(
-                                      color: _selectedIndex[index] == (i)
-                                          ? colors.primary
-                                          : colors.black12,
-                                      width: 1.5),
-                                ),
-                                onSelected: att.length == 1
-                                    ? null
-                                    : (bool selected) {
-                                  if (selected) if (mounted)
-                                    setState(() {
-                                      available = false;
-                                      _selectedIndex[index] =
-                                      selected ? i : null;
-                                      List<int> selectedId =
-                                      []; //list where user choosen item id is stored
-                                      List<bool> check = [];
-                                      for (int i = 0;
-                                      i <
-                                          widget.model!.attributeList!
-                                              .length;
-                                      i++) {
-                                        List<String> attId = widget
-                                            .model!.attributeList![i].id!
-                                            .split(',');
-
-                                        if (_selectedIndex[i] != null)
-                                          selectedId.add(int.parse(
-                                              attId[_selectedIndex[i]!]));
-                                      }
-                                      check.clear();
-                                      late List<String> sinId;
-                                      findMatch:
-                                      for (int i = 0;
-                                      i <
-                                          widget.model!.prVarientList!
-                                              .length;
-                                      i++) {
-                                        sinId = widget
-                                            .model!
-                                            .prVarientList![i]
-                                            .attribute_value_ids!
-                                            .split(",");
-
-                                        for (int j = 0;
-                                        j < selectedId.length;
-                                        j++) {
-                                          if (sinId.contains(
-                                              selectedId[j].toString())) {
-                                            check.add(true);
-
-                                            if (selectedId.length ==
-                                                sinId.length &&
-                                                check.length ==
-                                                    selectedId.length) {
-                                              varSelected = i;
-                                              selectIndex = i;
-                                              break findMatch;
-                                            }
-                                          } else {
-                                            check.clear();
-                                            selectIndex = null;
-                                            break;
-                                          }
-                                        }
-                                      }
-
-                                      if (selectedId.length == sinId.length &&
-                                          check.length == selectedId.length) {
-                                        if (widget.model!.stockType == "0" ||
-                                            widget.model!.stockType == "1") {
-                                          if (widget.model!.availability ==
-                                              "1") {
-                                            available = true;
-                                            outOfStock = false;
-                                            _oldSelVarient = varSelected;
-                                          } else {
-                                            available = false;
-                                            outOfStock = true;
-                                          }
-                                        } else if (widget.model!.stockType ==
-                                            "null") {
-                                          available = true;
-                                          outOfStock = false;
-                                          _oldSelVarient = varSelected;
-                                        } else if (widget.model!.stockType ==
-                                            "2") {
-                                          if (widget
-                                              .model!
-                                              .prVarientList![
-                                          varSelected!]
-                                              .availability ==
-                                              "1") {
-                                            available = true;
-                                            outOfStock = false;
-                                            _oldSelVarient = varSelected;
-                                          } else {
-                                            available = false;
-                                            outOfStock = true;
-                                          }
-                                        }
-                                      } else {
+                            labelPadding: EdgeInsets.all(0),
+                            //selectedColor: Theme.of(context).colorScheme.fontColor.withOpacity(0.1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  attSType[i] == "1" ? 100 : 10),
+                              side: BorderSide(
+                                  color: _selectedIndex[index] == (i)
+                                      ? colors.primary
+                                      : colors.black12,
+                                  width: 1.5),
+                            ),
+                            onSelected: att.length == 1
+                                ? null
+                                : (bool selected) {
+                                    if (selected) if (mounted)
+                                      setState(() {
                                         available = false;
-                                        outOfStock = false;
-                                      }
-                                      if (widget
-                                          .model!
-                                          .prVarientList![_oldSelVarient!]
-                                          .images!
-                                          .length >
-                                          0) {
-                                        int oldVarTotal = 0;
-                                        if (_oldSelVarient! > 0)
-                                          for (int i = 0;
-                                          i < _oldSelVarient!;
-                                          i++) {
-                                            oldVarTotal = oldVarTotal +
-                                                widget
-                                                    .model!
-                                                    .prVarientList![i]
-                                                    .images!
+                                        _selectedIndex[index] =
+                                            selected ? i : null;
+                                        List<int> selectedId =
+                                            []; //list where user choosen item id is stored
+                                        List<bool> check = [];
+                                        for (int i = 0;
+                                            i <
+                                                widget.model!.attributeList!
                                                     .length;
+                                            i++) {
+                                          List<String> attId = widget
+                                              .model!.attributeList![i].id!
+                                              .split(',');
+
+                                          if (_selectedIndex[i] != null)
+                                            selectedId.add(int.parse(
+                                                attId[_selectedIndex[i]!]));
+                                        }
+                                        check.clear();
+                                        late List<String> sinId;
+                                        findMatch:
+                                        for (int i = 0;
+                                            i <
+                                                widget.model!.prVarientList!
+                                                    .length;
+                                            i++) {
+                                          sinId = widget
+                                              .model!
+                                              .prVarientList![i]
+                                              .attribute_value_ids!
+                                              .split(",");
+
+                                          for (int j = 0;
+                                              j < selectedId.length;
+                                              j++) {
+                                            if (sinId.contains(
+                                                selectedId[j].toString())) {
+                                              check.add(true);
+
+                                              if (selectedId.length ==
+                                                      sinId.length &&
+                                                  check.length ==
+                                                      selectedId.length) {
+                                                varSelected = i;
+                                                selectIndex = i;
+                                                break findMatch;
+                                              }
+                                            } else {
+                                              check.clear();
+                                              selectIndex = null;
+                                              break;
+                                            }
                                           }
-                                        int p =
-                                            widget.model!.otherImage!.length +
-                                                1 +
-                                                oldVarTotal;
+                                        }
 
-                                        _pageController.jumpToPage(p);
-                                      }
-                                    });
-                                },
-                              );
+                                        if (selectedId.length == sinId.length &&
+                                            check.length == selectedId.length) {
+                                          if (widget.model!.stockType == "0" ||
+                                              widget.model!.stockType == "1") {
+                                            if (widget.model!.availability ==
+                                                "1") {
+                                              available = true;
+                                              outOfStock = false;
+                                              _oldSelVarient = varSelected;
+                                            } else {
+                                              available = false;
+                                              outOfStock = true;
+                                            }
+                                          } else if (widget.model!.stockType ==
+                                              "null") {
+                                            available = true;
+                                            outOfStock = false;
+                                            _oldSelVarient = varSelected;
+                                          } else if (widget.model!.stockType ==
+                                              "2") {
+                                            if (widget
+                                                    .model!
+                                                    .prVarientList![
+                                                        varSelected!]
+                                                    .availability ==
+                                                "1") {
+                                              available = true;
+                                              outOfStock = false;
+                                              _oldSelVarient = varSelected;
+                                            } else {
+                                              available = false;
+                                              outOfStock = true;
+                                            }
+                                          }
+                                        } else {
+                                          available = false;
+                                          outOfStock = false;
+                                        }
+                                        if (widget
+                                                .model!
+                                                .prVarientList![_oldSelVarient!]
+                                                .images!
+                                                .length >
+                                            0) {
+                                          int oldVarTotal = 0;
+                                          if (_oldSelVarient! > 0)
+                                            for (int i = 0;
+                                                i < _oldSelVarient!;
+                                                i++) {
+                                              oldVarTotal = oldVarTotal +
+                                                  widget
+                                                      .model!
+                                                      .prVarientList![i]
+                                                      .images!
+                                                      .length;
+                                            }
+                                          int p =
+                                              widget.model!.otherImage!.length +
+                                                  1 +
+                                                  oldVarTotal;
 
-                              chips.add(choiceChip);
-                            }
-                          }
+                                          _pageController.jumpToPage(p);
+                                        }
+                                      });
+                                  },
+                          );
 
-                          String value = _selectedIndex[index] != null &&
+                          chips.add(choiceChip);
+                        }
+                      }
+
+                      String value = _selectedIndex[index] != null &&
                               _selectedIndex[index]! <= att.length
-                              ? att[_selectedIndex[index]!]
-                              : getTranslated(context, 'VAR_SEL')!.substring(
+                          ? att[_selectedIndex[index]!]
+                          : getTranslated(context, 'VAR_SEL')!.substring(
                               2, getTranslated(context, 'VAR_SEL')!.length);
-                          return chips.length > 0
-                              ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  widget.model!.attributeList![index].name! +
-                                      " : " +
-                                      value,
-                                  style:
-                                  TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                new Wrap(
-                                  children: chips.map<Widget>((Widget? chip) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: chip,
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            ),
-                          )
-                              : Container();
-                        },
-                      ),
-                      available == false || outOfStock == true
-                          ? Center(
+                      return chips.length > 0
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    widget.model!.attributeList![index].name! +
+                                        " : " +
+                                        value,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  new Wrap(
+                                    children: chips.map<Widget>((Widget? chip) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: chip,
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container();
+                    },
+                  ),
+                  available == false || outOfStock == true
+                      ? Center(
                           child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              outOfStock == true
-                                  ? 'Out of Stock'
-                                  : "This varient doesn't available.",
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ))
-                          : Container(),
-                      CupertinoButton(
-                        padding: EdgeInsets.all(0),
-                        child: Container(
-                            alignment: FractionalOffset.center,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              gradient: available!
-                                  ? LinearGradient(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            outOfStock == true
+                                ? 'Out of Stock'
+                                : "This varient doesn't available.",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ))
+                      : Container(),
+                  CupertinoButton(
+                    padding: EdgeInsets.all(0),
+                    child: Container(
+                        alignment: FractionalOffset.center,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          gradient: available!
+                              ? LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: [
-                                    colors.grad1Color,
-                                    colors.grad2Color
-                                  ],
+                                      colors.grad1Color,
+                                      colors.grad2Color
+                                    ],
                                   stops: [
-                                    0,
-                                    1
-                                  ])
-                                  : null,
-                              color: available!
-                                  ? null
-                                  : Theme.of(context).colorScheme.gray,
-                            ),
-                            child: Text(getTranslated(context, 'APPLY')!,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.button!.copyWith(
+                                      0,
+                                      1
+                                    ])
+                              : null,
+                          color: available!
+                              ? null
+                              : Theme.of(context).colorScheme.gray,
+                        ),
+                        child: Text(getTranslated(context, 'APPLY')!,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.button!.copyWith(
                                   color: Theme.of(context).colorScheme.white,
                                 ))),
-                        onPressed: available! ? applyVarient : null,
-                        // onPressed: available ? applyVarient : null,
-                      )
-                    ],
-                  ),
-                );
-              });
+                    onPressed: available! ? applyVarient : null,
+                    // onPressed: available ? applyVarient : null,
+                  )
+                ],
+              ),
+            );
+          });
         });
   }
 
@@ -1585,8 +1614,8 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
           print("paramters are here now ${parameter}  and ${manageCartApi}");
           Response response =
-          await post(manageCartApi, body: parameter, headers: headers)
-              .timeout(Duration(seconds: timeOut));
+              await post(manageCartApi, body: parameter, headers: headers)
+                  .timeout(Duration(seconds: timeOut));
 
           var getdata = json.decode(response.body);
 
@@ -1655,8 +1684,8 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
         };
 
         Response response =
-        await post(getRatingApi, body: parameter, headers: headers)
-            .timeout(Duration(seconds: timeOut));
+            await post(getRatingApi, body: parameter, headers: headers)
+                .timeout(Duration(seconds: timeOut));
         var getdata = json.decode(response.body);
 
         bool error = getdata["error"];
@@ -1712,8 +1741,8 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
         var parameter = {USER_ID: CUR_USERID, PRODUCT_ID: widget.model!.id};
         Response response =
-        await post(setFavoriteApi, body: parameter, headers: headers)
-            .timeout(Duration(seconds: timeOut));
+            await post(setFavoriteApi, body: parameter, headers: headers)
+                .timeout(Duration(seconds: timeOut));
 
         var getdata = json.decode(response.body);
 
@@ -1759,8 +1788,8 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
         var parameter = {USER_ID: CUR_USERID, PRODUCT_ID: widget.model!.id};
         Response response =
-        await post(removeFavApi, body: parameter, headers: headers)
-            .timeout(Duration(seconds: timeOut));
+            await post(removeFavApi, body: parameter, headers: headers)
+                .timeout(Duration(seconds: timeOut));
 
         var getdata = json.decode(response.body);
         bool error = getdata["error"];
@@ -1797,129 +1826,129 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
   _showContent() {
     //qtyController.text=
     qtyController.text =
-    widget.model!.prVarientList![widget.model!.selVarient!].cartCount!;
+        widget.model!.prVarientList![widget.model!.selVarient!].cartCount!;
     //String id=widget.model!.id!;
     //print("id****${widget.model!.id!}****${widget.model!.name!}");
     return Column(children: <Widget>[
       Expanded(
           child: CustomScrollView(slivers: <Widget>[
-            SliverAppBar(
-              expandedHeight: MediaQuery.of(context).size.height * .43,
-              floating: false,
-              pinned: true,
-              backgroundColor: Theme.of(context).colorScheme.white,
-              leading: Builder(builder: (BuildContext context) {
-                return Container(
-                  margin: EdgeInsets.all(10),
-                  //decoration: shadow(),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(4),
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_rounded,
-                        color: colors.primary,
-                      ),
-                    ),
-                  ),
-                );
-              }),
-              actions: [
-                IconButton(
-                    icon: SvgPicture.asset(
-                      imagePath + "search.svg",
-                      height: 20,
-                      color: colors.primary,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Search(),
-                          ));
-                    }),
-                IconButton(
-                  icon: SvgPicture.asset(
-                    imagePath + "desel_fav.svg",
-                    height: 20,
+        SliverAppBar(
+          expandedHeight: MediaQuery.of(context).size.height * .43,
+          floating: false,
+          pinned: true,
+          backgroundColor: Theme.of(context).colorScheme.white,
+          leading: Builder(builder: (BuildContext context) {
+            return Container(
+              margin: EdgeInsets.all(10),
+              //decoration: shadow(),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(4),
+                onTap: () => Navigator.of(context).pop(),
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_back_ios_rounded,
                     color: colors.primary,
                   ),
-                  onPressed: () {
-                    CUR_USERID != null
-                        ? Navigator.push(
+                ),
+              ),
+            );
+          }),
+          actions: [
+            IconButton(
+                icon: SvgPicture.asset(
+                  imagePath + "search.svg",
+                  height: 20,
+                  color: colors.primary,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Search(),
+                      ));
+                }),
+            IconButton(
+              icon: SvgPicture.asset(
+                imagePath + "desel_fav.svg",
+                height: 20,
+                color: colors.primary,
+              ),
+              onPressed: () {
+                CUR_USERID != null
+                    ? Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => Favorite(),
                         ))
-                        : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Login(),
+                    : Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Login(),
+                        ),
+                      );
+              },
+            ),
+            Selector<UserProvider, String>(
+              builder: (context, data, child) {
+                return IconButton(
+                  icon: Stack(
+                    children: [
+                      Center(
+                        child: SvgPicture.asset(
+                          imagePath + "appbarCart.svg",
+                          color: colors.primary,
+                        ),
                       ),
-                    );
-                  },
-                ),
-                Selector<UserProvider, String>(
-                  builder: (context, data, child) {
-                    return IconButton(
-                      icon: Stack(
-                        children: [
-                          Center(
-                            child: SvgPicture.asset(
-                              imagePath + "appbarCart.svg",
-                              color: colors.primary,
-                            ),
-                          ),
-                          (data != null && data.isNotEmpty && data != "0")
-                              ? new Positioned(
-                            bottom: 20,
-                            right: 0,
-                            child: Container(
-                              //  height: 20,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: colors.primary),
-                              child: new Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(3),
-                                  child: new Text(
-                                    data,
-                                    style: TextStyle(
-                                        fontSize: 7,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .white),
+                      (data != null && data.isNotEmpty && data != "0")
+                          ? new Positioned(
+                              bottom: 20,
+                              right: 0,
+                              child: Container(
+                                //  height: 20,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: colors.primary),
+                                child: new Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(3),
+                                    child: new Text(
+                                      data,
+                                      style: TextStyle(
+                                          fontSize: 7,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .white),
+                                    ),
                                   ),
                                 ),
                               ),
+                            )
+                          : Container()
+                    ],
+                  ),
+                  onPressed: () {
+                    CUR_USERID != null
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Cart(
+                                fromBottom: false,
+                              ),
                             ),
                           )
-                              : Container()
-                        ],
-                      ),
-                      onPressed: () {
-                        CUR_USERID != null
-                            ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Cart(
-                              fromBottom: false,
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Login(),
                             ),
-                          ),
-                        )
-                            : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Login(),
-                          ),
-                        );
-                      },
-                    );
+                          );
                   },
-                  selector: (_, homeProvider) => homeProvider.curCartCount,
-                )
-                /*  Container(
+                );
+              },
+              selector: (_, homeProvider) => homeProvider.curCartCount,
+            )
+            /*  Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 child: Material(
                   color: Colors.transparent,
@@ -2024,115 +2053,115 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                 ]),
               ),
             ),*/
-              ],
-              title: Text(
-                widget.model!.name ?? '',
-                maxLines: 1,
-                style:
+          ],
+          title: Text(
+            widget.model!.name ?? '',
+            maxLines: 1,
+            style:
                 TextStyle(color: colors.primary, fontWeight: FontWeight.normal),
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                background: _slider(),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                //SingleChildScrollView( controller: notificationcontroller,
+          ),
+          flexibleSpace: FlexibleSpaceBar(
+            background: _slider(),
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate([
+            //SingleChildScrollView( controller: notificationcontroller,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Card(
-                          elevation: 0,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _title(),
-                              (widget.model!.rating! == "0" ||
-                                  widget.model!.rating! == "0.0" ||
-                                  widget.model!.rating! == "0.00")
-                                  ? Container()
-                                  : _rate(),
-                              _price(widget.model!.selVarient, true),
-                              _offPrice(widget.model!.selVarient),
-                              _shortDesc(),
-                            ],
-                          ),
-                        ),
-
-                        /*  widget.model!.type == "variable_product"
-                        ? Divider()
-                        : Container(),*/
-
-                        _getVarient(widget.model!.selVarient),
-
-                        // Divider(),
-                        _specification(),
-                        // Divider(),
-
-                        _deliverPincode(),
-
-                        //Divider(),
-                        //  _sellerDetail(),
-                        // Divider()
-                        //_tags()
-                      ],
-                    ),
-                    reviewList.length > 0
-                        ? Card(
+                  children: [
+                    Card(
                       elevation: 0,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          _reviewTitle(),
-                          _reviewStar(),
-                          _reviewImg(),
-                          _review(),
+                          _title(),
+                          (widget.model!.rating! == "0" ||
+                                  widget.model!.rating! == "0.0" ||
+                                  widget.model!.rating! == "0.00")
+                              ? Container()
+                              : _rate(),
+                          _price(widget.model!.selVarient, true),
+                          _offPrice(widget.model!.selVarient),
+                          _shortDesc(),
                         ],
                       ),
-                    )
-                        : Container(),
-                    // reviewList.length > 0 ? Divider() : Container(),
-                    productList.length > 0
-                        ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        getTranslated(context, 'MORE_PRODUCT')!,
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                    )
-                        : Container(),
-                    Container(
-                        height: 230,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: NotificationListener<ScrollNotification>(
-                            onNotification: (ScrollNotification scrollInfo) {
-                              if (scrollInfo.metrics.pixels ==
-                                  scrollInfo.metrics.maxScrollExtent) {
-                                getProduct();
-                              }
-                              return true;
-                            },
-                            child: ListView.builder(
-                              physics: AlwaysScrollableScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              //controller: _controller,
-                              itemCount: (notificationoffset < totalProduct)
-                                  ? productList.length + 1
-                                  : productList.length,
-                              itemBuilder: (context, index) {
-                                return (index == productList.length &&
-                                    !notificationisloadmore)
-                                    ? simmerSingle()
-                                    : productItem(index);
-                              },
-                            )
+                    ),
 
-                          /*    List.generate(
+                    /*  widget.model!.type == "variable_product"
+                        ? Divider()
+                        : Container(),*/
+
+                    _getVarient(widget.model!.selVarient),
+
+                    // Divider(),
+                    _specification(),
+                    // Divider(),
+
+                    _deliverPincode(),
+
+                    //Divider(),
+                    //  _sellerDetail(),
+                    // Divider()
+                    //_tags()
+                  ],
+                ),
+                reviewList.length > 0
+                    ? Card(
+                        elevation: 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _reviewTitle(),
+                            _reviewStar(),
+                            _reviewImg(),
+                            _review(),
+                          ],
+                        ),
+                      )
+                    : Container(),
+                // reviewList.length > 0 ? Divider() : Container(),
+                productList.length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          getTranslated(context, 'MORE_PRODUCT')!,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      )
+                    : Container(),
+                Container(
+                    height: 230,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (scrollInfo.metrics.pixels ==
+                              scrollInfo.metrics.maxScrollExtent) {
+                            getProduct();
+                          }
+                          return true;
+                        },
+                        child: ListView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          //controller: _controller,
+                          itemCount: (notificationoffset < totalProduct)
+                              ? productList.length + 1
+                              : productList.length,
+                          itemBuilder: (context, index) {
+                            return (index == productList.length &&
+                                    !notificationisloadmore)
+                                ? simmerSingle()
+                                : productItem(index);
+                          },
+                        )
+
+                        /*    List.generate(
                         productList.length,
                         (index) {
                           Product? item;
@@ -2152,104 +2181,104 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                         },
                       )*/
                         )),
-                  ],
-                )
-              ]),
+              ],
             )
-          ])),
+          ]),
+        )
+      ])),
       widget.model!.availability == "1" || widget.model!.stockType == "null"
           ? Container(
-        height: 55,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.white,
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).colorScheme.black26,
-                blurRadius: 10)
-          ],
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          children: [
-            // OutlinedButton.icon(
-            //   onPressed: () {
-            //     if (context
-            //                 .read<ProductDetailProvider>()
-            //                 .compareList
-            //                 .length >
-            //             0 &&
-            //         context
-            //             .read<ProductDetailProvider>()
-            //             .compareList
-            //             .contains(widget.model)) {
-            //       Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) =>
-            //                   CompareList()));
-            //     } else {
-            //       context
-            //           .read<ProductDetailProvider>()
-            //           .addCompareList(widget.model!);
-            //
-            //       Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) =>
-            //                   CompareList()));
-            //     }
-            //   },
-            //   icon: Icon(Icons.compare,
-            //       color: Theme.of(context).colorScheme.btnColor),
-            //   label: Text(""),
-            //   style: OutlinedButton.styleFrom(
-            //     side: BorderSide(
-            //         color: Theme.of(context).colorScheme.btnColor),
-            //   ),
-            // ),
+              height: 55,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).colorScheme.black26,
+                      blurRadius: 10)
+                ],
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  // OutlinedButton.icon(
+                  //   onPressed: () {
+                  //     if (context
+                  //                 .read<ProductDetailProvider>()
+                  //                 .compareList
+                  //                 .length >
+                  //             0 &&
+                  //         context
+                  //             .read<ProductDetailProvider>()
+                  //             .compareList
+                  //             .contains(widget.model)) {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (BuildContext context) =>
+                  //                   CompareList()));
+                  //     } else {
+                  //       context
+                  //           .read<ProductDetailProvider>()
+                  //           .addCompareList(widget.model!);
+                  //
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (BuildContext context) =>
+                  //                   CompareList()));
+                  //     }
+                  //   },
+                  //   icon: Icon(Icons.compare,
+                  //       color: Theme.of(context).colorScheme.btnColor),
+                  //   label: Text(""),
+                  //   style: OutlinedButton.styleFrom(
+                  //     side: BorderSide(
+                  //         color: Theme.of(context).colorScheme.btnColor),
+                  //   ),
+                  // ),
 
-            /// share section here with dynamic links
+                  /// share section here with dynamic links
 
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            //   child: OutlinedButton.icon(
-            //     onPressed: createDynamicLink,
-            //     icon: Icon(Icons.share,
-            //         color: Theme.of(context).colorScheme.btnColor),
-            //     label: Text(""),
-            //     style: OutlinedButton.styleFrom(
-            //       side: BorderSide(
-            //           color: Theme.of(context).colorScheme.btnColor),
-            //     ),
-            //   ),
-            // ),
-            Expanded(
-              child: TextButton.icon(
-                  style: TextButton.styleFrom(
-                      backgroundColor:
-                      Theme.of(context).colorScheme.btnColor),
-                  onPressed: () {
-                    String qty = ((int.parse(qtyController.text)) +0
-                        // (int.parse(widget.model!.qtyStepSize!))
-                    )
-                        .toString();
-                    addToCart(qty, true);
-                  },
-                  icon: Icon(
-                    Icons.shopping_bag,
-                    color: Theme.of(context).colorScheme.white,
-                  ),
-                  label: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      getTranslated(context, 'BUYNOW')!,
-                      style: TextStyle(
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //   child: OutlinedButton.icon(
+                  //     onPressed: createDynamicLink,
+                  //     icon: Icon(Icons.share,
+                  //         color: Theme.of(context).colorScheme.btnColor),
+                  //     label: Text(""),
+                  //     style: OutlinedButton.styleFrom(
+                  //       side: BorderSide(
+                  //           color: Theme.of(context).colorScheme.btnColor),
+                  //     ),
+                  //   ),
+                  // ),
+                  Expanded(
+                    child: TextButton.icon(
+                        style: TextButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.btnColor),
+                        onPressed: () {
+                          String qty = ((int.parse(qtyController.text)) + 0
+                              // (int.parse(widget.model!.qtyStepSize!))
+                              )
+                              .toString();
+                          addToCart(qty, true);
+                        },
+                        icon: Icon(
+                          Icons.shopping_bag,
                           color: Theme.of(context).colorScheme.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )),
-            ),
-            /*    Container(
+                        ),
+                        label: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            getTranslated(context, 'BUYNOW')!,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                  ),
+                  /*    Container(
                     width: deviceWidth! * 0.5,
                     child: InkWell(
                       onTap: () {
@@ -2263,7 +2292,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                       )),
                     ),
                   ),*/
-            /*      Container(
+                  /*      Container(
                     height: 55,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -2288,34 +2317,34 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                       )),
                     ),
                   ),*/
-          ],
-        ),
-      )
+                ],
+              ),
+            )
           : Container(
-        height: 55,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.white,
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).colorScheme.black26,
-                blurRadius: 10)
-          ],
-        ),
-        child: Center(
-            child: Text(
-              getTranslated(context, 'OUT_OF_STOCK_LBL')!,
-              style: Theme.of(context)
-                  .textTheme
-                  .button!
-                  .copyWith(fontWeight: FontWeight.bold, color: Colors.red),
-            )),
-      ),
+              height: 55,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.white,
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context).colorScheme.black26,
+                      blurRadius: 10)
+                ],
+              ),
+              child: Center(
+                  child: Text(
+                getTranslated(context, 'OUT_OF_STOCK_LBL')!,
+                style: Theme.of(context)
+                    .textTheme
+                    .button!
+                    .copyWith(fontWeight: FontWeight.bold, color: Colors.red),
+              )),
+            ),
     ]);
   }
 
   simmerSingle() {
     return Container(
-      //width: double.infinity,
+        //width: double.infinity,
         padding: const EdgeInsets.symmetric(
           horizontal: 8.0,
         ),
@@ -2335,16 +2364,16 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
     return madeIn != null && madeIn.isNotEmpty
         ? Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: ListTile(
-        trailing: Text(madeIn),
-        dense: true,
-        title: Text(
-          getTranslated(context, 'MADE_IN')!,
-          style: Theme.of(context).textTheme.subtitle2,
-        ),
-      ),
-    )
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ListTile(
+              trailing: Text(madeIn),
+              dense: true,
+              title: Text(
+                getTranslated(context, 'MADE_IN')!,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ),
+          )
         : Container();
   }
 
@@ -2352,14 +2381,14 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
     if (index < productList.length) {
       String? offPer;
       double price =
-      double.parse(productList[index].prVarientList![0].disPrice!);
+          double.parse(productList[index].prVarientList![0].disPrice!);
       if (price == 0) {
         price = double.parse(productList[index].prVarientList![0].price!);
       } else {
         double off =
             double.parse(productList[index].prVarientList![0].price!) - price;
         offPer = ((off * 100) /
-            double.parse(productList[index].prVarientList![0].price!))
+                double.parse(productList[index].prVarientList![0].price!))
             .toStringAsFixed(2);
       }
 
@@ -2396,8 +2425,8 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                               fit: BoxFit.contain,
                               imageErrorBuilder: (context, error, stackTrace) =>
                                   erroWidget(
-                                    double.maxFinite,
-                                  ),
+                                double.maxFinite,
+                              ),
 
                               //errorWidget: (context, url, e) => placeHolder(width),
                               placeholder: placeHolder(
@@ -2406,27 +2435,27 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        offPer != null
-                            ? Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: colors.red,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                offPer + "%",
-                                style: TextStyle(
-                                    color: colors.whiteTemp,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 9),
-                              ),
-                            ),
-                            margin: EdgeInsets.all(5),
-                          ),
-                        )
-                            : Container(),
+                        // offPer != null
+                        //     ? Align(
+                        //         alignment: Alignment.topLeft,
+                        //         child: Container(
+                        //           decoration: BoxDecoration(
+                        //               color: colors.red,
+                        //               borderRadius: BorderRadius.circular(10)),
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.all(5.0),
+                        //             child: Text(
+                        //               offPer + "%",
+                        //               style: TextStyle(
+                        //                   color: colors.whiteTemp,
+                        //                   fontWeight: FontWeight.bold,
+                        //                   fontSize: 9),
+                        //             ),
+                        //           ),
+                        //           margin: EdgeInsets.all(5),
+                        //         ),
+                        //       )
+                        //     : Container(),
                         Divider(
                           height: 1,
                         ),
@@ -2480,7 +2509,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsetsDirectional.only(
+                    padding: EdgeInsetsDirectional.only(
                       start: 5.0,
                       top: 5,
                     ),
@@ -2506,7 +2535,6 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsetsDirectional.only(
                         start: 5.0, top: 5, bottom: 5),
@@ -2525,19 +2553,26 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.fontColor,
                               fontWeight: FontWeight.bold)),
-                      Text(
-                        double.parse(productList[index]
-                            .prVarientList![0]
-                            .disPrice!) !=
-                            0
-                            ? CUR_CURRENCY! +
-                            "" +
-                            productList[index].prVarientList![0].price!
-                            : "",
-                        style: Theme.of(context).textTheme.overline!.copyWith(
-                            decoration: TextDecoration.lineThrough,
-                            letterSpacing: 0),
-                      ),
+                      offPer == "0.00" || offPer == 0.00
+                          ? SizedBox.shrink()
+                          : Text(
+                              double.parse(productList[index]
+                                          .prVarientList![0]
+                                          .disPrice!) !=
+                                      0
+                                  ? CUR_CURRENCY! +
+                                      "" +
+                                      productList[index]
+                                          .prVarientList![0]
+                                          .price!
+                                  : "",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .overline!
+                                  .copyWith(
+                                      decoration: TextDecoration.lineThrough,
+                                      letterSpacing: 0),
+                            ),
                     ],
                   ),
                 ],
@@ -2545,18 +2580,17 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
               onTap: () {
                 Product model = productList[index];
                 notificationoffset = 0;
-
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    // transitionDuration: Duration(seconds: 1),
+                      // transitionDuration: Duration(seconds: 1),
                       pageBuilder: (_, __, ___) => ProductDetail(
                           model: model,
                           secPos: widget.secPos,
                           index: index,
                           list: true
-                        //  title: sectionList[secPos].title,
-                      )),
+                          //  title: sectionList[secPos].title,
+                          )),
                 );
               },
             ),
@@ -2570,54 +2604,54 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
     return _isLoading
         ? Center(child: CircularProgressIndicator())
         : ListView.separated(
-        shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-        itemCount: reviewList.length >= 2 ? 2 : reviewList.length,
-        physics: NeverScrollableScrollPhysics(),
-        separatorBuilder: (BuildContext context, int index) => Divider(),
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            itemCount: reviewList.length >= 2 ? 2 : reviewList.length,
+            physics: NeverScrollableScrollPhysics(),
+            separatorBuilder: (BuildContext context, int index) => Divider(),
+            itemBuilder: (context, index) {
+              return Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    reviewList[index].username!,
-                    style: TextStyle(fontWeight: FontWeight.w400),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        reviewList[index].username!,
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      ),
+                      Spacer(),
+                      Text(
+                        reviewList[index].date!,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.lightBlack,
+                            fontSize: 11),
+                      )
+                    ],
                   ),
-                  Spacer(),
-                  Text(
-                    reviewList[index].date!,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.lightBlack,
-                        fontSize: 11),
-                  )
+                  RatingBarIndicator(
+                    rating: double.parse(reviewList[index].rating!),
+                    itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: colors.primary,
+                    ),
+                    itemCount: 5,
+                    itemSize: 12.0,
+                    direction: Axis.horizontal,
+                  ),
+                  reviewList[index].comment != null &&
+                          reviewList[index].comment!.isNotEmpty
+                      ? Text(
+                          reviewList[index].comment ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : Container(),
+                  reviewImage(index),
                 ],
-              ),
-              RatingBarIndicator(
-                rating: double.parse(reviewList[index].rating!),
-                itemBuilder: (context, index) => Icon(
-                  Icons.star,
-                  color: colors.primary,
-                ),
-                itemCount: 5,
-                itemSize: 12.0,
-                direction: Axis.horizontal,
-              ),
-              reviewList[index].comment != null &&
-                  reviewList[index].comment!.isNotEmpty
-                  ? Text(
-                reviewList[index].comment ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )
-                  : Container(),
-              reviewImage(index),
-            ],
-          );
-        });
+              );
+            });
   }
 
   Future getProduct() async {
@@ -2645,8 +2679,8 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
           if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID;
 
           Response response =
-          await post(getProductApi, headers: headers, body: parameter)
-              .timeout(Duration(seconds: timeOut));
+              await post(getProductApi, headers: headers, body: parameter)
+                  .timeout(Duration(seconds: timeOut));
 
           var getdata = json.decode(response.body);
 
@@ -2661,34 +2695,34 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
             if (mounted) {
               new Future.delayed(
                   Duration.zero,
-                      () => setState(() {
-                    List mainlist = getdata['data'];
+                  () => setState(() {
+                        List mainlist = getdata['data'];
 
-                    if (mainlist.length != 0) {
-                      List<Product> items = [];
-                      List<Product> allitems = [];
+                        if (mainlist.length != 0) {
+                          List<Product> items = [];
+                          List<Product> allitems = [];
 
-                      items.addAll(mainlist
-                          .map((data) => new Product.fromJson(data))
-                          .toList());
+                          items.addAll(mainlist
+                              .map((data) => new Product.fromJson(data))
+                              .toList());
 
-                      allitems.addAll(items);
+                          allitems.addAll(items);
 
-                      for (Product item in items) {
-                        productList
-                            .where((i) => i.id == item.id)
-                            .map((obj) {
-                          allitems.remove(item);
-                          return obj;
-                        }).toList();
-                      }
-                      productList.addAll(allitems);
-                      notificationisloadmore = true;
-                      notificationoffset = notificationoffset + perPage;
-                    } else {
-                      notificationisloadmore = false;
-                    }
-                  }));
+                          for (Product item in items) {
+                            productList
+                                .where((i) => i.id == item.id)
+                                .map((obj) {
+                              allitems.remove(item);
+                              return obj;
+                            }).toList();
+                          }
+                          productList.addAll(allitems);
+                          notificationisloadmore = true;
+                          notificationoffset = notificationoffset + perPage;
+                        } else {
+                          notificationisloadmore = false;
+                        }
+                      }));
             }
           } else {
             notificationisloadmore = false;
@@ -2784,13 +2818,13 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => SellerProfile(
-                  sellerStoreName: widget.model!.store_name ?? "",
-                  sellerRating: widget.model!.seller_rating ?? "",
-                  sellerImage: widget.model!.seller_profile ?? "",
-                  sellerName: widget.model!.seller_name ?? "",
-                  sellerID: widget.model!.seller_id,
-                  storeDesc: widget.model!.store_description,
-                )));
+                      sellerStoreName: widget.model!.store_name ?? "",
+                      sellerRating: widget.model!.seller_rating ?? "",
+                      sellerImage: widget.model!.seller_profile ?? "",
+                      sellerName: widget.model!.seller_name ?? "",
+                      sellerID: widget.model!.seller_id,
+                      storeDesc: widget.model!.store_description,
+                    )));
           },
         ),
       ),
@@ -2860,7 +2894,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
         itemBuilder: (context, index) {
           return Padding(
             padding:
-            const EdgeInsetsDirectional.only(end: 10, bottom: 5.0, top: 5),
+                const EdgeInsetsDirectional.only(end: 10, bottom: 5.0, top: 5),
             child: InkWell(
               onTap: () {
                 Navigator.push(
@@ -2901,50 +2935,50 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
   _shortDesc() {
     return widget.model!.shortDescription != null &&
-        widget.model!.shortDescription!.isNotEmpty
+            widget.model!.shortDescription!.isNotEmpty
         ? Padding(
-      padding: const EdgeInsetsDirectional.only(
-          start: 8, end: 8, top: 8, bottom: 5),
-      child: Text(
-        widget.model!.shortDescription!,
-        style: Theme.of(context).textTheme.subtitle2,
-      ),
-    )
+            padding: const EdgeInsetsDirectional.only(
+                start: 8, end: 8, top: 8, bottom: 5),
+            child: Text(
+              widget.model!.shortDescription!,
+              style: Theme.of(context).textTheme.subtitle2,
+            ),
+          )
         : Container();
   }
 
   _attr() {
     return widget.model!.attributeList!.isNotEmpty
         ? Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: widget.model!.attributeList!.length,
-        itemBuilder: (context, i) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    widget.model!.attributeList![i].name!,
-                    style: Theme.of(context).textTheme.subtitle2,
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: widget.model!.attributeList!.length,
+              itemBuilder: (context, i) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          widget.model!.attributeList![i].name!,
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child: Text(
+                            widget.model!.attributeList![i].value!,
+                            textAlign: TextAlign.right,
+                          )),
+                    ],
                   ),
-                ),
-                Expanded(
-                    flex: 2,
-                    child: Text(
-                      widget.model!.attributeList![i].value!,
-                      textAlign: TextAlign.right,
-                    )),
-              ],
+                );
+              },
             ),
-          );
-        },
-      ),
-    )
+          )
         : Container();
   }
 
@@ -2983,16 +3017,16 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
     return warranty != null && warranty.isNotEmpty
         ? Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: ListTile(
-        trailing: Text(warranty),
-        dense: true,
-        title: Text(
-          getTranslated(context, 'WARRENTY')!,
-          style: Theme.of(context).textTheme.subtitle2,
-        ),
-      ),
-    )
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ListTile(
+              trailing: Text(warranty),
+              dense: true,
+              title: Text(
+                getTranslated(context, 'WARRENTY')!,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ),
+          )
         : Container();
   }
 
@@ -3000,14 +3034,14 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
     return Align(
         alignment: Alignment.center,
         child: (widget.model!.videType != null &&
-            widget.model!.video != null &&
-            widget.model!.video!.isNotEmpty &&
-            widget.model!.video != "")
+                widget.model!.video != null &&
+                widget.model!.video!.isNotEmpty &&
+                widget.model!.video != "")
             ? Icon(
-          Icons.play_circle_fill_outlined,
-          color: colors.primary,
-          size: 35,
-        )
+                Icons.play_circle_fill_outlined,
+                color: colors.primary,
+                size: 35,
+              )
             : Container());
   }
 
@@ -3022,7 +3056,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
                   color: Theme.of(context).colorScheme.fontColor,
                   fontSize: 11)),
           backgroundColor:
-          Theme.of(context).colorScheme.fontColor.withOpacity(0.1),
+              Theme.of(context).colorScheme.fontColor.withOpacity(0.1),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -3063,72 +3097,72 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
   _reviewImg() {
     return revImgList.length > 0
         ? Container(
-      height: 100,
-      child: ListView.builder(
-        itemCount: revImgList.length > 5 ? 5 : revImgList.length,
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-            child: GestureDetector(
-              onTap: () async {
-                if (index == 4) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ReviewGallary(model: widget.model)));
-                } else {
-                  Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        // transitionDuration: Duration(seconds: 1),
-                          pageBuilder: (_, __, ___) => ReviewPreview(
-                            index: index,
-                            model: widget.model,
-                          )));
-                }
-              },
-              child: Stack(
-                children: [
-                  FadeInImage(
-                    fadeInDuration: Duration(milliseconds: 150),
-                    image: CachedNetworkImageProvider(
-                      revImgList[index].img!,
+            height: 100,
+            child: ListView.builder(
+              itemCount: revImgList.length > 5 ? 5 : revImgList.length,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              physics: AlwaysScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                  child: GestureDetector(
+                    onTap: () async {
+                      if (index == 4) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ReviewGallary(model: widget.model)));
+                      } else {
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                // transitionDuration: Duration(seconds: 1),
+                                pageBuilder: (_, __, ___) => ReviewPreview(
+                                      index: index,
+                                      model: widget.model,
+                                    )));
+                      }
+                    },
+                    child: Stack(
+                      children: [
+                        FadeInImage(
+                          fadeInDuration: Duration(milliseconds: 150),
+                          image: CachedNetworkImageProvider(
+                            revImgList[index].img!,
+                          ),
+                          height: 100.0,
+                          width: 80.0,
+                          fit: BoxFit.contain,
+                          //  errorWidget: (context, url, e) => placeHolder(50),
+                          placeholder: placeHolder(80),
+                          imageErrorBuilder: (context, error, stackTrace) =>
+                              erroWidget(80),
+                        ),
+                        index == 4
+                            ? Container(
+                                height: 100.0,
+                                width: 80.0,
+                                color: colors.black54,
+                                child: Center(
+                                    child: Text(
+                                  "+${revImgList.length - 5}",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.white,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                              )
+                            : Container()
+                      ],
                     ),
-                    height: 100.0,
-                    width: 80.0,
-                    fit: BoxFit.contain,
-                    //  errorWidget: (context, url, e) => placeHolder(50),
-                    placeholder: placeHolder(80),
-                    imageErrorBuilder: (context, error, stackTrace) =>
-                        erroWidget(80),
                   ),
-                  index == 4
-                      ? Container(
-                    height: 100.0,
-                    width: 80.0,
-                    color: colors.black54,
-                    child: Center(
-                        child: Text(
-                          "+${revImgList.length - 5}",
-                          style: TextStyle(
-                              color:
-                              Theme.of(context).colorScheme.white,
-                              fontWeight: FontWeight.bold),
-                        )),
-                  )
-                      : Container()
-                ],
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
-    )
+          )
         : Container();
   }
 
@@ -3137,16 +3171,16 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
 
     return gaurantee != null && gaurantee.isNotEmpty
         ? Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: ListTile(
-        trailing: Text(gaurantee),
-        dense: true,
-        title: Text(
-          getTranslated(context, 'GAURANTEE')!,
-          style: Theme.of(context).textTheme.subtitle2,
-        ),
-      ),
-    )
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ListTile(
+              trailing: Text(gaurantee),
+              dense: true,
+              title: Text(
+                getTranslated(context, 'GAURANTEE')!,
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ),
+          )
         : Container();
   }
 
@@ -3160,8 +3194,8 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
         };
 
         Response response =
-        await post(checkDeliverableApi, body: parameter, headers: headers)
-            .timeout(Duration(seconds: timeOut));
+            await post(checkDeliverableApi, body: parameter, headers: headers)
+                .timeout(Duration(seconds: timeOut));
 
         var getdata = json.decode(response.body);
 
@@ -3245,7 +3279,7 @@ class StateItem extends State<ProductDetail> with TickerProviderStateMixin {
               Text(
                 widget.model!.rating ?? "",
                 style:
-                const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
               Text(
                   "${reviewList.length}  ${getTranslated(context, "RATINGS")!}")
@@ -3379,4 +3413,3 @@ class AnimatedProgressBar extends AnimatedWidget {
     );
   }
 }
-

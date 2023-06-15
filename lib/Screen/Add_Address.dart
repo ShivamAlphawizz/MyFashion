@@ -1072,11 +1072,11 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
         AREA_ID: area,
         ADDRESS: widget.update! ? address : addressC?.text,
         STATE: state,
-        COUNTRY: country,
+        COUNTRY: countryC!.text,
         TYPE: type,
         ISDEFAULT: checkedDefault.toString() == "true" ? "1" : "0",
-        LATITUDE: widget.update! ? latitude : latitude,
-        LONGITUDE: longitude
+        LATITUDE: "",
+        LONGITUDE: "",
       };
       print("para here ${data.toString()}");
       print("para here are ${getAddAddressApi}");

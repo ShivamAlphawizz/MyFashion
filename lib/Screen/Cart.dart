@@ -92,7 +92,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
   List<TextEditingController> _editControllers = [];
 
-
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   List<SectionModel> saveLaterList = [];
@@ -109,13 +108,12 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   //List<PaymentItem> _gpaytItems = [];
   //Pay _gpayClient;
 
-
   SettingProvider? settingsProvider;
   UserProvider? userProvider;
   String? userType;
   _getSaved() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userProvider = Provider.of<UserProvider>(this.context,listen: false);
+    userProvider = Provider.of<UserProvider>(this.context, listen: false);
     userType = prefs.getString('user_type');
     print("user type here now ${userType}");
     settingsProvider =
@@ -127,19 +125,19 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
   var finalResult;
   String? LastResult;
-  getShareData()async{
+  getShareData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-   userType = prefs.getString('user_type');
+    userType = prefs.getString('user_type');
   }
 
   @override
   void initState() {
     super.initState();
     clearAll();
-    Future.delayed(Duration(milliseconds: 1000),(){
+    Future.delayed(Duration(milliseconds: 1000), () {
       return _getSaved();
     });
-    Future.delayed(Duration(milliseconds: 500),(){
+    Future.delayed(Duration(milliseconds: 500), () {
       return getShareData();
     });
     _getCart("0");
@@ -350,7 +348,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                     height: 100,
                                     child: FadeInImage(
                                       image: CachedNetworkImageProvider(
-                                          cartList[index].productList![0].image!),
+                                          cartList[index]
+                                              .productList![0]
+                                              .image!),
                                       height: 125.0,
                                       width: 110.0,
                                       fit: BoxFit.contain,
@@ -389,7 +389,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                           )
                                         : Container()),
                               ])),
-                          offPer != null?  Container()
+                          offPer != null
+                              ? Container()
                               // ? Container(
                               //     decoration: BoxDecoration(
                               //         color: colors.red,
@@ -738,8 +739,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
       _editControllers.add(new TextEditingController());
     }
     _controller[index].text = cartList[index].qty!;
-  //  _editControllers[index].text = cartList[index].perItemPrice.toString();
-
+    //  _editControllers[index].text = cartList[index].perItemPrice.toString();
 
     List att = [], val = [];
     if (cartList[index].productList![0].prVarientList![selectedPos].attr_name !=
@@ -936,7 +936,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                     ),
                                   ],
                                 ),
-
                               ],
                             ),
                             cartList[index].productList![0].availability ==
@@ -997,9 +996,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                     size: 1,
                                                   ),
                                                   onSelected: (String value) {
-                                                    addToCartCheckout(
-                                                      '',
-                                                        index, value, cartList);
+                                                    addToCartCheckout('', index,
+                                                        value, cartList);
                                                   },
                                                   itemBuilder:
                                                       (BuildContext context) {
@@ -1043,7 +1041,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                             ),
                                             onTap: () {
                                               addToCartCheckout(
-                                              '',
+                                                  '',
                                                   index,
                                                   (int.parse(cartList[index]
                                                               .qty!) +
@@ -1062,76 +1060,98 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                 : Container(),
                           ],
                         ),
-                  userType == "retail" || userType == "wholeseller" || userType == "wholeSeller" || userType == "whole-seller" ? SizedBox() :  Container(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                height: 40,
-                child: TextFormField(
-                  controller: _editControllers[index],
-                  onChanged: (v){
-                    var res = (price.toInt() * int.parse(v.toString()))/100;
-                    print("res here now final ${res}");
-                    var res1 = res.toInt() + price.toInt();
-                    print("ok res here nowv ${res1}");
-                    setState(() {
-                            addToCartCheckout(
-                              res == null || res == "" ? "" :  res1.toString(),
-                                 //_editControllers[index].text.toString(),
-                                index,
-                                cartList[index].qty.toString(),
-                                //+
-                                   //  int.parse(cartList[
-                                   //  index]
-                                   //      .productList![0]
-                                   //      .qtyStepSize!))
-                                   // .toString(),
-                                cartList);
-
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Input margin %",
-                    contentPadding: EdgeInsets.symmetric(vertical: 8,horizontal: 8),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)
-                    )
-                  ),
-                ),
-              ),
-            ),
-            // Expanded(
-            //   child: InkWell(
-            //     onTap: (){
-            //       addToCartCheckout(
-            //            _editControllers[index].text.toString(),
-            //           index,
-            //           cartList[index].qty.toString(),
-            //           //+
-            //              //  int.parse(cartList[
-            //              //  index]
-            //              //      .productList![0]
-            //              //      .qtyStepSize!))
-            //              // .toString(),
-            //           cartList);
-            //     },
-            //     child: Container(
-            //       height: 40,
-            //       alignment: Alignment.center,
-            //         decoration: BoxDecoration(
-            //           color: colors.primary,
-            //           borderRadius: BorderRadius.circular(5)
-            //         ),
-            //         child:Text("Add",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 15),),
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
-      ),
-                        userType == "retail" || userType == "wholeseller" ? SizedBox() :   Text("Input price offered to your end customer here",style: TextStyle(color: Colors.red),)
+                        userType == "retail" ||
+                                userType == "wholeseller" ||
+                                userType == "wholeSeller" ||
+                                userType == "whole-seller"
+                            ? SizedBox()
+                            : Container(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: 40,
+                                        child: TextFormField(
+                                          controller: _editControllers[index],
+                                          onChanged: (v) {
+                                            var res = (price.toInt() *
+                                                    int.parse(v.toString())) /
+                                                100;
+                                            print("res here now final ${res}");
+                                            var res1 =
+                                                res.toInt() + price.toInt();
+                                            print("ok res here nowv ${res1}");
+                                            setState(() {
+                                              addToCartCheckout(
+                                                  res == null || res == ""
+                                                      ? ""
+                                                      : res1.toString(),
+                                                  //_editControllers[index].text.toString(),
+                                                  index,
+                                                  cartList[index]
+                                                      .qty
+                                                      .toString(),
+                                                  //+
+                                                  //  int.parse(cartList[
+                                                  //  index]
+                                                  //      .productList![0]
+                                                  //      .qtyStepSize!))
+                                                  // .toString(),
+                                                  cartList);
+                                            });
+                                          },
+                                          decoration: InputDecoration(
+                                              hintText: "Enter margin %",
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 8),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8))),
+                                        ),
+                                      ),
+                                    ),
+                                    // Expanded(
+                                    //   child: InkWell(
+                                    //     onTap: (){
+                                    //       addToCartCheckout(
+                                    //            _editControllers[index].text.toString(),
+                                    //           index,
+                                    //           cartList[index].qty.toString(),
+                                    //           //+
+                                    //              //  int.parse(cartList[
+                                    //              //  index]
+                                    //              //      .productList![0]
+                                    //              //      .qtyStepSize!))
+                                    //              // .toString(),
+                                    //           cartList);
+                                    //     },
+                                    //     child: Container(
+                                    //       height: 40,
+                                    //       alignment: Alignment.center,
+                                    //         decoration: BoxDecoration(
+                                    //           color: colors.primary,
+                                    //           borderRadius: BorderRadius.circular(5)
+                                    //         ),
+                                    //         child:Text("Add",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 15),),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                        userType == "retail" ||
+                                userType == "wholeseller" ||
+                                userType == "wholeSeller" ||
+                                userType == "whole-seller"
+                            ? SizedBox()
+                            : Text(
+                                "Input price offered to your end customer here",
+                                style: TextStyle(color: Colors.red),
+                              )
                       ],
                     ),
                   ),
@@ -1313,24 +1333,26 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                           .prVarientList![selectedPos]
                                           .disPrice! !=
                                       "0"
-                              ? Container(
-                                  decoration: BoxDecoration(
-                                      color: colors.red,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      off.toStringAsFixed(2) + "%",
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 9),
-                                    ),
-                                  ),
-                                  margin: EdgeInsets.all(5),
-                                )
+                              ?
+                              // Container(
+                              //         decoration: BoxDecoration(
+                              //             color: colors.red,
+                              //             borderRadius: BorderRadius.circular(10)),
+                              //         child: Padding(
+                              //           padding: const EdgeInsets.all(5.0),
+                              //           child: Text(
+                              //             off.toStringAsFixed(2) + "%",
+                              //             style: TextStyle(
+                              //                 color: Theme.of(context)
+                              //                     .colorScheme
+                              //                     .white,
+                              //                 fontWeight: FontWeight.bold,
+                              //                 fontSize: 9),
+                              //           ),
+                              //         ),
+                              //         margin: EdgeInsets.all(5),
+                              //       )
+                              Container()
                               : Container()
                         ],
                       )),
@@ -1826,8 +1848,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     //     _scaffoldKey);
   }
 
-  Future<void> addToCartCheckout(String editPrice,
-      int index, String qty, List<SectionModel> cartList) async {
+  Future<void> addToCartCheckout(String editPrice, int index, String qty,
+      List<SectionModel> cartList) async {
     _isNetworkAvail = await isNetworkAvailable();
     if (_isNetworkAvail) {
       try {
@@ -2564,8 +2586,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             child: Text(getTranslated(context, 'SHOP_NOW')!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline6!.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal))),
+                    color: Colors.white, fontWeight: FontWeight.normal))),
         onPressed: () {
           Navigator.of(context).pushNamedAndRemoveUntil(
               '/home', (Route<dynamic> route) => false);
@@ -3327,14 +3348,18 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 Icon(Icons.location_on),
                 Padding(
                     padding: const EdgeInsetsDirectional.only(start: 8.0),
-                    child: userType == "retail" ? Text(
-                      getTranslated(context, 'SHIPPING_DETAIL') ?? '',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.fontColor),
-                    ) : Text("From Address",style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.fontColor))),
+                    child: userType == "retail"
+                        ? Text(
+                            getTranslated(context, 'SHIPPING_DETAIL') ?? '',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.fontColor),
+                          )
+                        : Text("From Address",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).colorScheme.fontColor))),
               ],
             ),
             Divider(),
@@ -3434,41 +3459,75 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                       },
                     ),
                   ),
-            userType == "reseller" ?
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Text("To Address: ",style: TextStyle(fontWeight: FontWeight.w600),),
-                    SizedBox(height: 10,),
-                     finalResult != null ? Container(child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Text("${finalResult['name']}"),
-                         Text("${finalResult['mobile']}, ${finalResult['address']}, ${finalResult['city']}, ${finalResult['area']}, ${finalResult['pincode']}, ${finalResult['state']}, ${finalResult['country']}"),
-                       ],
-                     ),) : InkWell(
-                      onTap: ()async{
-                       finalResult =  await  Navigator.push(context, MaterialPageRoute(builder: (context) =>DeliveryAddress()));
-                      print("checking result here ${finalResult}");
-                      setState(() {
-                        LastResult = finalResult['name'].toString() + " ," + finalResult['mobile'].toString() + " ," + finalResult['address'].toString() + " ,"  + finalResult['city'].toString() + " , "  + finalResult['area'].toString() + " , " + finalResult['pincode'].toString() + " , " + finalResult['state'].toString();
-                      });
-                      },
-                      child: Container(
-                        height: 40,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: colors.primary,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text('Add Address',style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w500),),
+            userType == "reseller"
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Divider(),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ],
-                ) : SizedBox.shrink()
-
+                      Text(
+                        "To Address: ",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      finalResult != null
+                          ? Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${finalResult['name']}"),
+                                  Text(
+                                      "${finalResult['mobile']}, ${finalResult['address']}, ${finalResult['city']}, ${finalResult['area']}, ${finalResult['pincode']}, ${finalResult['state']}, ${finalResult['country']}"),
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () async {
+                                finalResult = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DeliveryAddress()));
+                                print("checking result here ${finalResult}");
+                                setState(() {
+                                  LastResult = finalResult['name'].toString() +
+                                      " ," +
+                                      finalResult['mobile'].toString() +
+                                      " ," +
+                                      finalResult['address'].toString() +
+                                      " ," +
+                                      finalResult['city'].toString() +
+                                      " , " +
+                                      finalResult['area'].toString() +
+                                      " , " +
+                                      finalResult['pincode'].toString() +
+                                      " , " +
+                                      finalResult['state'].toString();
+                                });
+                              },
+                              child: Container(
+                                height: 40,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: colors.primary,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  'Add Address',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                    ],
+                  )
+                : SizedBox.shrink()
           ],
         ),
       ),

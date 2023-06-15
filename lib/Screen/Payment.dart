@@ -39,7 +39,6 @@ bool codAllowed = true;
 String? bankName, bankNo, acName, acNo, exDetails;
 
 class StatePayment extends State<Payment> with TickerProviderStateMixin {
-
   bool _isLoading = true;
   String? startingDate;
 
@@ -60,14 +59,16 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   var userType;
-  getSaved()async{
+  getSaved() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userType = prefs.getString('user_type');
+    print("checking user type here ${userType}");
   }
 
   List<String?> paymentMethodList = [];
   List<String> paymentIconList = [
-    Platform.isIOS ? 'assets/images/applepay.svg' : 'assets/images/gpay.svg',
+    //Platform.isIOS ? 'assets/images/applepay.svg' :
+    'assets/images/gpay.svg',
     'assets/images/cod.svg',
     'assets/images/paypal.svg',
     'assets/images/payu.svg',
@@ -84,14 +85,15 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
   bool _isNetworkAvail = true;
   final plugin = PaystackPlugin();
 
-
-
   @override
   void initState() {
     super.initState();
+    // Future.delayed(Duration(milliseconds: 300), () {
+    //   return _getdateTime();
+    // });
     _getdateTime();
     timeSlotList.length = 0;
-    Future.delayed(Duration(milliseconds: 500),(){
+    Future.delayed(Duration(milliseconds: 500), () {
       return getSaved();
     });
     new Future.delayed(Duration.zero, () {
@@ -171,7 +173,6 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: getSimpleAppBar(getTranslated(context, 'PAYMENT_METHOD_LBL')!,
@@ -365,7 +366,10 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
                                               itemCount:
                                                   paymentMethodList.length,
                                               itemBuilder: (context, index) {
-                                                if (index == 1 && cod && userType == "retail")
+                                                print(
+                                                    "index value is here ${index} and ${userType} and ${cod}");
+                                                if (userType == "retail" ||
+                                                    index == 1 && cod)
                                                   return paymentItem(index);
                                                 else if (index == 2 && paypal)
                                                   return paymentItem(index);
@@ -386,7 +390,6 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
                                                   return paymentItem(index);
                                                 else if (index == 9 &&
                                                     bankTransfer)
-
                                                   return paymentItem(index);
                                                 else
                                                   return Container();
@@ -519,7 +522,7 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
         Response response =
             await post(getSettingApi, body: parameter, headers: headers)
                 .timeout(Duration(seconds: timeOut));
-
+        print("checking response here now ${getSettingApi} and ${parameter}");
         if (response.statusCode == 200) {
           var getdata = json.decode(response.body);
 

@@ -33,19 +33,21 @@ class _GettingStartedScreenState extends State<IntroSlider>
       setState(() {
         slideList = [
           Slide(
-            imageUrl: 'assets/images/introimage_a.png',
-            title: getTranslated(context, 'TITLE1_LBL'),
-            description: getTranslated(context, 'DISCRIPTION1'),
+            imageUrl: 'assets/images/newIntro1.png',
+            title: "Choose Products",
+            description: "Search millions of items you want very easily",
           ),
           Slide(
-            imageUrl: 'assets/images/introimage_b.png',
-            title: getTranslated(context, 'TITLE2_LBL'),
-            description: getTranslated(context, 'DISCRIPTION2'),
+            imageUrl: 'assets/images/newIntro2.png',
+            title: "Share It",
+            description:
+                "We're the eShop and here to make your life easier. Just relax and let's get started",
           ),
           Slide(
-            imageUrl: 'assets/images/introimage_c.png',
-            title: getTranslated(context, 'TITLE3_LBL'),
-            description: getTranslated(context, 'DISCRIPTION3'),
+            imageUrl: 'assets/images/newIntro3.png',
+            title: "Earn Profit",
+            description:
+                "Special for you. Free delivered fees for many cities.",
           ),
         ];
       });

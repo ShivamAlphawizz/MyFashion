@@ -7,6 +7,8 @@ class Model {
   String? id,
       type,
       typeId,
+      url,
+      cat_id,
       image,
       fromTime,
       lastTime,
@@ -27,7 +29,9 @@ class Model {
       {this.id,
       this.type,
       this.typeId,
+        this.url,
       this.image,
+        this.cat_id,
       this.name,
       this.banner,
       this.list,
@@ -61,6 +65,8 @@ class Model {
         id: parsedJson[ID],
         image: parsedJson[IMAGE],
         type: parsedJson[TYPE],
+        url: parsedJson['url'],
+        cat_id : parsedJson['cat_id'],
         typeId: parsedJson[TYPE_ID],
         list: listContent);
   }
@@ -84,7 +90,9 @@ class Model {
         email: parsedJson[EMAIL],
         status: parsedJson[STATUS],
         date: date,
-        type: parsedJson[TIC_TYPE]);
+        type: parsedJson[TIC_TYPE],
+        url: parsedJson['url'],
+    cat_id: parsedJson['cat_id']);
   }
 
   factory Model.fromSupport(Map<String, dynamic> parsedJson) {
@@ -134,14 +142,17 @@ class Model {
 }
 
 class attachment {
-  String? media, type;
+  String? media, type,url,cat_id;
 
-  attachment({this.media, this.type});
+  attachment({this.media, this.type,this.url,this.cat_id});
 
   factory attachment.setJson(Map<String, dynamic> parsedJson) {
     return new attachment(
       media: parsedJson[MEDIA],
       type: parsedJson[ICON],
+      url: parsedJson['url'],
+        cat_id: parsedJson['cat_id'],
+
     );
   }
 }

@@ -43,7 +43,6 @@ class _SignInUpAccState extends State<SignInUpAcc> {
       child: Image.asset(
         'assets/images/homelogo.png',
         width: 180,
-
       ),
     );
   }
@@ -171,7 +170,13 @@ class _SignInUpAccState extends State<SignInUpAcc> {
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
     return Container(
-        color: Theme.of(context).colorScheme.lightWhite,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/background.png"),
+              fit: BoxFit.fill),
+        ),
+        //  color: Theme.of(context).colorScheme.lightWhite,
         child: Center(
             child: SingleChildScrollView(
                 child: Column(

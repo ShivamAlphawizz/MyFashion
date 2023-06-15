@@ -37,12 +37,20 @@ import 'Product_Detail.dart';
 import 'package:http/http.dart' as http;
 
 class ProductList extends StatefulWidget {
-  final String? name, id;
+  final String? name,id,typeId,type;
   final bool? tag, fromSeller;
   final int? dis;
   final String? catId;
   const ProductList(
-      {Key? key,this.id,this.catId ,this.name, this.tag, this.fromSeller, this.dis})
+      {Key? key,
+      this.id,
+      this.catId,
+      this.typeId,
+      this.type,
+      this.name,
+      this.tag,
+      this.fromSeller,
+      this.dis})
       : super(key: key);
 
   @override
@@ -54,7 +62,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<Product> productList = [];
   List<Product> tempList = [];
-  String sortBy = 'p.id', orderBy = "DESC";
+  String sortBy = 'p.id', orderBy = "";
   int offset = 0;
   int total = 0;
   String? totalProduct;
@@ -85,24 +93,24 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
   openwhatsapp(String image) async {
     var whatsapp = "+919090909090";
     // var whatsapp = "+919644595859";
-    var whatsappURl_android = "whatsapp://send?phone=" + whatsapp +
-        "&text=${Uri.parse(image)}";
+    var whatsappURl_android =
+        "whatsapp://send?phone=" + whatsapp + "&text=${Uri.parse(image)}";
     var whatappURL_ios = "https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
     if (Platform.isIOS) {
       // for iOS phone only
       if (await canLaunch(whatappURL_ios)) {
         await launch(whatappURL_ios, forceSafariVC: false);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("Whatsapp does not exist in this device")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: new Text("Whatsapp does not exist in this device")));
       }
     } else {
       // android , web
       if (await canLaunch(whatsappURl_android)) {
         await launch(whatsappURl_android);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: new Text("Whatsapp does not exist in this device")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: new Text("Whatsapp does not exist in this device")));
       }
     }
   }
@@ -112,7 +120,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
   String? userType;
   _getSaved() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    userProvider = Provider.of<UserProvider>(this.context,listen: false);
+    userProvider = Provider.of<UserProvider>(this.context, listen: false);
     userType = prefs.getString('user_type');
     print("user type here now ${userType}");
     settingsProvider =
@@ -120,7 +128,6 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
     print("llllllll ${userProvider!.userType}");
     print("provider data here now ${settingsProvider!.userType}");
     //String get = await settingsProvider.getPrefrence(APP_THEME) ?? '';
-
   }
 
   @override
@@ -128,7 +135,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
     super.initState();
     controller.addListener(_scrollListener);
     getProduct("0");
-    Future.delayed(Duration(seconds: 1000),(){
+    Future.delayed(Duration(seconds: 1000), () {
       return _getSaved();
     });
     buttonController = new AnimationController(
@@ -178,7 +185,11 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     // userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
-        appBar: widget.fromSeller! ? null : getAppBar(widget.name!, context),
+        appBar: widget.fromSeller!
+            ? null
+            : widget.name == "" || widget.name == null
+                ? getAppBar("", context)
+                : getAppBar(widget.name.toString(), context),
         key: _scaffoldKey,
         body: _isNetworkAvail
             ? _isLoading
@@ -259,7 +270,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
       Product model = productList[index];
       totalProduct = model.total;
 
-        if (_controller.length < index + 1)
+      if (_controller.length < index + 1)
         _controller.add(new TextEditingController());
 
       _controller[index].text =
@@ -309,8 +320,6 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
                                   bottomLeft: Radius.circular(10)),
                               child: Stack(
                                 children: [
-
-
                                   FadeInImage(
                                     image: CachedNetworkImageProvider(
                                         model.image!),
@@ -1046,7 +1055,8 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
   }
 
   void getProduct(String top) {
-    print("checking paras here ${widget.id} and ${widget.catId}");
+    print(
+        "checking paras here ${widget.id} and ${widget.catId} and ${orderBy}");
     //_currentRangeValues.start.round().toString(),
     // _currentRangeValues.end.round().toString(),
     Map parameter = {
@@ -1057,6 +1067,21 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
       TOP_RETAED: top,
       // 'sub_category':"${widget.id}",
     };
+
+    if(widget.type == "categories"){
+      parameter[CATID] = widget.id == "" || widget.id == null
+          ? widget.catId == null
+          ? ""
+          : widget.catId
+          : widget.id;
+    }
+    else if(widget.type == "attributes"){
+      parameter['attribute_value_ids'] = widget.typeId.toString();
+    }
+    else if(widget.type == "products"){
+      parameter['id'] = "${widget.id}";
+    }
+
     if (selId != null && selId != "") {
       parameter[ATTRIBUTE_VALUE_ID] = selId;
     }
@@ -1064,7 +1089,13 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
     if (widget.fromSeller!) {
       parameter["seller_id"] = widget.id!;
     } else {
-      parameter[CATID] = widget.id == "" || widget.id == null  ? widget.catId : widget.id;
+      if (widget.id == null || widget.id == "") {
+        parameter[CATID] = widget.id == "" || widget.id == null
+            ? widget.catId == null
+            ? ""
+            : widget.catId
+            : widget.id;
+      }
     }
     if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
     if (widget.dis != null) parameter[DISCOUNT] = widget.dis.toString();
@@ -1077,45 +1108,46 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
       parameter[MAXPRICE] = _currentRangeValues!.end.round().toString();
     }
 
-    print("parametera are here ${parameter}");
+    print("parametera are here lllllll ${parameter}");
 
     apiBaseHelper.postAPICall(getProductApi, parameter).then((getdata) {
       bool error = getdata["error"];
       String? msg = getdata["message"];
-      if (!error) {
+      print("checking result here now ${error}");
+      if (error == false) {
         total = int.parse(getdata["total"]);
-
+        print("sssssdssddd ${total}");
         if (_isFirstLoad) {
           filterList = getdata["filters"];
-
           minPrice = getdata[MINPRICE];
           maxPrice = getdata[MAXPRICE];
           _currentRangeValues =
               RangeValues(double.parse(minPrice), double.parse(maxPrice));
           _isFirstLoad = false;
         }
+        //  if ((offset) < total){
+        tempList.clear();
+        var data = getdata["data"];
+        tempList =
+            (data as List).map((data) => new Product.fromJson(data)).toList();
 
-       // if ((offset) < total) {
-          tempList.clear();
-
-          var data = getdata["data"];
-          tempList =
-              (data as List).map((data) => new Product.fromJson(data)).toList();
-
-          if (getdata.containsKey(TAG)) {
-            List<String> tempList = List<String>.from(getdata[TAG]);
-            if (tempList != null && tempList.length > 0) tagList = tempList;
-          }
-          getAvailVarient();
-          offset = offset + perPage;
-       // } else {
-         // if (msg != "Products Not Found !") setSnackbar(msg!, context);
-          isLoadingmore = false;
-      //  }
-      } else {
-        isLoadingmore = false;
-        if (msg != "Products Not Found !") setSnackbar(msg!, context);
+        if (getdata.containsKey(TAG)) {
+          List<String> tempList = List<String>.from(getdata[TAG]);
+          if (tempList != null && tempList.length > 0) tagList = tempList;
+        }
+        getAvailVarient();
+        offset = offset + perPage;
       }
+      //else {
+      // if (msg != "Products Not Found !") setSnackbar(msg!, context);
+      isLoadingmore = false;
+      //}
+      //}
+      // else {
+      //   isLoadingmore = false;
+      //   if (msg != "Products Not Found !") setSnackbar(msg!, context);
+      // }
+
       setState(() {
         _isLoading = false;
       });
@@ -1360,7 +1392,6 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
         val = model.prVarientList![model.selVarient!].varient_value!.split(',');
       }
       double width = deviceWidth! * 0.5;
-
       return InkWell(
         child: Card(
           elevation: 4,
@@ -1428,27 +1459,30 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
                     //       : Container(),
                     // ),
                     (off != 0 || off != 0.0 || off != 0.00)
-                        ?  price.toInt() > int.parse(model
-                        .prVarientList![model.selVarient!]
-                        .price.toString()) ? SizedBox() : Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: colors.red,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text(
-                                  off.toStringAsFixed(2) + "%",
-                                  style: TextStyle(
-                                      color: colors.whiteTemp,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 9),
+                        ? double.parse(model
+                                    .prVarientList![model.selVarient!].price
+                                    .toString()) <
+                                price
+                            ? SizedBox()
+                            : Align(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: colors.red,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Text(
+                                      off.toStringAsFixed(2) + "%",
+                                      style: TextStyle(
+                                          color: colors.whiteTemp,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 9),
+                                    ),
+                                  ),
+                                  margin: EdgeInsets.all(5),
                                 ),
-                              ),
-                              margin: EdgeInsets.all(5),
-                            ),
-                          )
+                              )
                         : Container(),
 
                     // Align(
@@ -1470,6 +1504,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
                     //     margin: EdgeInsets.all(5),
                     //   ),
                     // ),
+
                     Divider(
                       height: 1,
                     ),
@@ -1726,39 +1761,46 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.fontColor,
                           fontWeight: FontWeight.bold)),
-                  double.parse(model
-                              .prVarientList![model.selVarient!].disPrice!) !=
-                          0
-                      ? Flexible(
-                          child: Row(
-                            children: <Widget>[
-                              Flexible(
-                                child: Text(
-                                  double.parse(model
-                                              .prVarientList![model.selVarient!]
-                                              .disPrice!) !=
-                                          0
-                                      ? CUR_CURRENCY! +
-                                          "" +
-                                          model
-                                              .prVarientList![model.selVarient!]
-                                              .price!
-                                      : "",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .overline!
-                                      .copyWith(
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          letterSpacing: 0),
-                                ),
+                  model.prVarientList![model.selVarient!].disPrice.toString() ==
+                          model.prVarientList![model.selVarient!].price
+                              .toString()
+                      ? SizedBox.shrink()
+                      : double.parse(model.prVarientList![model.selVarient!]
+                                  .disPrice!) !=
+                              0
+                          ? Flexible(
+                              child: Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    child: Text(
+                                      double.parse(model
+                                                  .prVarientList![
+                                                      model.selVarient!]
+                                                  .disPrice!) !=
+                                              0
+                                          ? CUR_CURRENCY! +
+                                              "" +
+                                              model
+                                                  .prVarientList![
+                                                      model.selVarient!]
+                                                  .price!
+                                          : "",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .overline!
+                                          .copyWith(
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                              letterSpacing: 0),
+                                    ),
+                                  ),
+                                  Text("| ${off.toStringAsFixed(2)}% off")
+                                ],
                               ),
-                            ],
-                          ),
-                        )
-                      : Container()
+                            )
+                          : Container()
                 ],
               ),
               Padding(
@@ -1829,54 +1871,68 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-        userType == "reseller" ?   Row(
-                children: [
-                  InkWell(
-                    onTap: ()async{
+              userType == "reseller"
+                  ? Row(
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            // openwhatsapp(model.image.toString());
+                            final uri = Uri.parse(model.image.toString());
+                            final res = await http.get(uri);
+                            final bytes = res.bodyBytes;
+                            final temp = await getExternalStorageDirectory();
+                            final String imageName =
+                                model.image!.split('/').last;
+                            print("image name here ${imageName}");
+                            final path = '${temp!.path}/${imageName}';
+                            print("helllo ${path}");
+                            File(path).writeAsBytes(bytes);
+                            // await WhatsappShare.shareFile(
+                            //   text: 'Whatsapp share text',
+                            //   phone: '91xxxxxxxxxx',
+                            //   filePath: [path],
+                            // );
+                            FlutterShare.shareFile(
+                                title: "hhsds", filePath: path);
 
-                     // openwhatsapp(model.image.toString());
-                        final uri =  Uri.parse(model.image.toString());
-                        final  res = await http.get(uri);
-                        final bytes = res.bodyBytes;
-                        final temp = await getExternalStorageDirectory();
-                        final String imageName = model.image!.split('/').last;
-                        print("image name here ${imageName}");
-                        final path = '${temp!.path}/${imageName}';
-                        print("helllo ${path}");
-                        File(path).writeAsBytes(bytes);
-                        // await WhatsappShare.shareFile(
-                        //   text: 'Whatsapp share text',
-                        //   phone: '91xxxxxxxxxx',
-                        //   filePath: [path],
-                        // );
-                        FlutterShare.shareFile(title: "hhsds", filePath: path);
-
-                        // await WhatsappShare.shareFile(
-                        //     text: '${model.name} \n \u{20B9} ${price} \n',
-                        //     phone: '91 7977887460',
-                        //     filePath: [path]
-                        // );
-                    //     await Share.shareFiles([path],text: "sdsds");
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 5,top: 3,left: 5,bottom: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.greenAccent.withOpacity(0.2),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 5,vertical: 3),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Share on ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),),
-                          Icon(Icons.whatsapp,color: Colors.greenAccent,size: 18,),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(),
-                ],
-              ): SizedBox.shrink()
+                            // await WhatsappShare.shareFile(
+                            //     text: '${model.name} \n \u{20B9} ${price} \n',
+                            //     phone: '91 7977887460',
+                            //     filePath: [path]
+                            // );
+                            //     await Share.shareFiles([path],text: "sdsds");
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(
+                                right: 5, top: 3, left: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.greenAccent.withOpacity(0.2),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 3),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Share on ",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Icon(
+                                  Icons.whatsapp,
+                                  color: Colors.greenAccent,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(),
+                      ],
+                    )
+                  : SizedBox.shrink()
             ],
           ),
           //),
@@ -2338,8 +2394,8 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
             onTap: () {
               productList.length != 0
                   ? setState(() {
-                    //  listType = !listType;
-                listType= true;
+                      //  listType = !listType;
+                      listType = true;
                     })
                   : null;
             },

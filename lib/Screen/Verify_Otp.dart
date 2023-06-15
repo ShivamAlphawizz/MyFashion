@@ -81,7 +81,7 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
     String? msg = getdata["message"];
     await buttonController!.reverse();
     if (!error) {
-      setSnackbar(msg!);
+      setSnackbar(msg.toString(),context);
       var i = getdata["data"][0];
       id = i[ID];
       username = i[USERNAME];
@@ -113,7 +113,7 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
        Navigator.pushNamedAndRemoveUntil(context, "/home", (r) => false);
       // Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyOtp(mobileNumber: mobile.toString(),)));
     } else {
-      setSnackbar(msg!);
+      setSnackbar(msg.toString(),context);
     }
   }
 String? token;
@@ -175,7 +175,7 @@ String? token;
         // _onVerifyCode();
         getVerifyOtp();
       } else {
-        setSnackbar(getTranslated(context, 'OTPWR')!);
+        setSnackbar(getTranslated(context, 'OTPWR').toString(),context);
       }
     } else {
       if (mounted) setState(() {});
@@ -187,11 +187,11 @@ String? token;
              // _onVerifyCode();
           getVerifyOtp();
           else {
-            setSnackbar(getTranslated(context, 'OTPWR')!);
+            setSnackbar(getTranslated(context, 'OTPWR').toString(),context);
           }
         } else {
           await buttonController!.reverse();
-          setSnackbar(getTranslated(context, 'somethingMSg')!);
+          setSnackbar(getTranslated(context, 'somethingMSg').toString(),context);
         }
       });
     }
@@ -208,17 +208,17 @@ String? token;
         });
   }
 
-  setSnackbar(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-        msg,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Theme.of(context).colorScheme.fontColor),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.lightWhite,
-      elevation: 1.0,
-    ));
-  }
+  // setSnackbar(String msg) {
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     content: Text(
+  //       msg,
+  //       textAlign: TextAlign.center,
+  //       style: TextStyle(color: Theme.of(context).colorScheme.fontColor),
+  //     ),
+  //     backgroundColor: Theme.of(context).colorScheme.lightWhite,
+  //     elevation: 1.0,
+  //   ));
+  // }
   void getVerifyOtp(){
       print("please check here now ${widget.otp} and ${otp.toString()}");
     if (widget.otp.toString() == otp.toString()) {
@@ -226,7 +226,7 @@ String? token;
       SettingProvider settingsProvider =
       Provider.of<SettingProvider>(context, listen: false);
 
-      setSnackbar(getTranslated(context, 'OTPMSG')!);
+      setSnackbar(getTranslated(context, 'OTPMSG').toString(),context);
       settingsProvider.setPrefrence(MOBILE, widget.mobileNumber.toString());
       settingsProvider.setPrefrence(COUNTRY_CODE, widget.countryCode.toString());
 
@@ -246,7 +246,7 @@ String? token;
         });
       }
     }else{
-      setSnackbar("Enter correct otp");
+      setSnackbar("Enter correct otp",context);
     }
   }
   // void _onVerifyCode() async {
@@ -342,7 +342,7 @@ String? token;
               Provider.of<SettingProvider>(context, listen: false);
 
           await buttonController!.reverse();
-          setSnackbar(getTranslated(context, 'OTPMSG')!);
+          setSnackbar(getTranslated(context, 'OTPMSG').toString(),context);
           settingsProvider.setPrefrence(MOBILE, widget.mobileNumber!);
           settingsProvider.setPrefrence(COUNTRY_CODE, widget.countryCode!);
           if (widget.title == getTranslated(context, 'SEND_OTP_TITLE')) {
@@ -361,16 +361,16 @@ String? token;
             });
           }
         } else {
-          setSnackbar(getTranslated(context, 'OTPERROR')!);
+          setSnackbar(getTranslated(context, 'OTPERROR').toString(),context);
           await buttonController!.reverse();
         }
       }).catchError((error) async {
-        setSnackbar(getTranslated(context, 'WRONGOTP')!);
+        setSnackbar(getTranslated(context, 'WRONGOTP').toString(),context);
 
         await buttonController!.reverse();
       });
     } else {
-      setSnackbar(getTranslated(context, 'ENTEROTP')!);
+      setSnackbar(getTranslated(context, 'ENTEROTP').toString(),context);
     }
   }
 

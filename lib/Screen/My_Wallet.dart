@@ -766,7 +766,6 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
         if (response.statusCode == 200) {
           var getdata = json.decode(response.body);
           bool error = getdata["error"];
-          // String msg = getdata["message"];
 
           if (!error) {
             total = int.parse(getdata["total"]);
@@ -781,9 +780,7 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
               tempList = (data as List)
                   .map((data) => new TransactionModel.fromJson(data))
                   .toList();
-
               tranList.addAll(tempList);
-
               offset = offset + perPage;
             }
           } else {
@@ -806,7 +803,6 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
       setState(() {
         _isNetworkAvail = false;
       });
-
     return null;
   }
 
@@ -941,7 +937,6 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
             if (razorpay!) razorpayId = payment["razorpay_key_id"];
             if (paystack!) {
               paystackId = payment["paystack_key_id"];
-
               paystackPlugin.initialize(publicKey: paystackId!);
             }
             if (stripe!) {
@@ -958,7 +953,6 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
               payTesting =
                   payment['paytm_payment_mode'] == 'sandbox' ? true : false;
             }
-
             for (int i = 0; i < paymentMethodList.length; i++) {
               payModel.add(RadioModel(
                   isSelected: i == selectedMethod ? true : false,

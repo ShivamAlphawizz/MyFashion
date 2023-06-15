@@ -20,6 +20,8 @@ import 'Login.dart';
 import 'OrderDetail.dart';
 
 class MyOrder extends StatefulWidget {
+  bool fromBottom;
+  MyOrder({this.fromBottom = false});
   @override
   State<StatefulWidget> createState() {
     return StateMyOrder();
@@ -182,7 +184,9 @@ class StateMyOrder extends State<MyOrder> with TickerProviderStateMixin {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.lightWhite,
-      appBar: getAppBar(getTranslated(context, "MY_ORDERS_LBL")!, context),
+      appBar: widget.fromBottom == true
+          ? null
+          : getAppBar(getTranslated(context, "MY_ORDERS_LBL")!, context),
       body: _isNetworkAvail
           ? _isLoading
               ? shimmer(context)
@@ -232,7 +236,7 @@ class StateMyOrder extends State<MyOrder> with TickerProviderStateMixin {
                             ? Center(
                                 child: Text(getTranslated(context, 'noItem')!))
                             : RefreshIndicator(
-                                 color: colors.primary,
+                                color: colors.primary,
                                 key: _refreshIndicatorKey,
                                 onRefresh: _refresh,
                                 child: ListView.builder(

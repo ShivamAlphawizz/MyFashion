@@ -10,6 +10,7 @@ import 'package:eshop_multivendor/Model/Section_Model.dart';
 import 'package:eshop_multivendor/Provider/UserProvider.dart';
 import 'package:eshop_multivendor/Screen/Favorite.dart';
 import 'package:eshop_multivendor/Screen/Login.dart';
+import 'package:eshop_multivendor/Screen/MyOrder.dart';
 import 'package:eshop_multivendor/Screen/MyProfile.dart';
 import 'package:eshop_multivendor/Screen/Product_Detail.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -157,10 +158,10 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
                     list: list,
                   )));
         } else {
-          if (msg != "Products Not Found !") setSnackbar(msg, context);
+          //  if (msg != "Products Not Found !") setSnackbar(msg, context);
         }
       } on TimeoutException catch (_) {
-        setSnackbar(getTranslated(context, 'somethingMSg')!, context);
+        //  setSnackbar(getTranslated(context, 'somethingMSg')!, context);
       }
     } else {
       {
@@ -190,7 +191,10 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
           children: [
             HomePage(),
             AllCategory(),
-            Sale(),
+            //Sale(),
+            MyOrder(
+              fromBottom: true,
+            ),
             Cart(
               fromBottom: true,
             ),
@@ -208,7 +212,7 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
     if (_selBottom == 1)
       title = getTranslated(context, 'CATEGORY');
     else if (_selBottom == 2)
-      title = getTranslated(context, 'OFFER');
+      title = getTranslated(context, 'MY_ORDERS_LBL');
     else if (_selBottom == 3)
       title = getTranslated(context, 'MYBAG');
     else if (_selBottom == 4) title = getTranslated(context, 'PROFILE');
@@ -366,14 +370,18 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
               Tab(
                 icon: _selBottom == 2
                     ? SvgPicture.asset(
-                        imagePath + "sale02.svg",
+                        imagePath + "pro_myorder.svg",
                         color: colors.primary,
+                        height: 25,
                       )
                     : SvgPicture.asset(
-                        imagePath + "sale.svg",
+                        imagePath + "pro_myorder.svg",
                         color: colors.primary,
+                        height: 25,
                       ),
-                text: _selBottom == 2 ? getTranslated(context, 'SALE') : null,
+                text: _selBottom == 2
+                    ? getTranslated(context, 'MY_ORDERS_LBL')
+                    : null,
               ),
               Tab(
                 icon: Selector<UserProvider, String>(
@@ -443,7 +451,7 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
               insets: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 70.0),
             ),
             labelColor: colors.primary,
-            labelStyle: TextStyle(fontSize: 8 , fontWeight: FontWeight.w600),
+            labelStyle: TextStyle(fontSize: 8, fontWeight: FontWeight.w600),
           ),
         ));
   }
